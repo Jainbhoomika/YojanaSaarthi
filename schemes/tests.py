@@ -4,6 +4,8 @@ from pathlib import Path
 
 from django.core.management import call_command
 from django.core.management.base import CommandError
+
+from django.urls import reverse
 from django.test import TestCase
 from schemes.models import Scheme
 
@@ -164,3 +166,37 @@ class SchemeModelTest(TestCase):
         scheme = Scheme.objects.get(name="Repeat Import Test")
         self.assertEqual(scheme.description, "Updated description")
         self.assertEqual(scheme.benefits, "Updated benefits")
+class SchemeAPITest(TestCase):
+    def setUp(self):
+        self.scheme = Scheme.objects.create(
+            name="Test Scheme",
+            description="A test description",
+            benefits="Financial assistance",
+            eligibility_summary="Eligible applicants only",
+            required_documents="Identity proof",
+            application_process="Apply online",
+            official_url="https://example.com/scheme",
+            last_verified="2026-10-26",
+        )
+
+    def test_scheme_list_api(self):
+        response = self.client.get(reverse("scheme-list"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]["name"], "Test Scheme")
+
+    def test_scheme_detail_api(self):
+        response = self.client.get(
+            reverse("scheme-detail", args=[self.scheme.id])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["name"], "Test Scheme")
+
+    def test_scheme_detail_not_found(self):
+        response = self.client.get(
+            reverse("scheme-detail", args=[999999])
+        )
+
+        self.assertEqual(response.status_code, 404)
