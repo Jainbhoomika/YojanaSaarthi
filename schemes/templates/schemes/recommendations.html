@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Recommendations | YojanaSaarthi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 30px 15px;
+            color: #243047;
+        }
+        .container {
+            max-width: 850px;
+            margin: auto;
+        }
+        .scheme {
+            background: white;
+            padding: 22px;
+            margin: 16px 0;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px #0000000c;
+        }
+        h1, h2 { color: #174c8c; }
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 5px;
+            background: #fff1cc;
+            color: #755400;
+            font-size: 13px;
+        }
+        a { color: #174c8c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Recommended Schemes</h1>
+        <p>These schemes are ranked according to how closely they match your answers.</p>
+        <p>Please verify eligibility and current rules on the official scheme website before applying.</p>
+
+        {% for scheme in results %}
+            <div class="scheme">
+                <h2>{{ scheme.name }}</h2>
+                <p>{{ scheme.description }}</p>
+                <p><strong>Benefits:</strong> {{ scheme.benefits }}</p>
+                <p><strong>Eligibility:</strong> {{ scheme.eligibility }}</p>
+                <p>
+                    <strong>Screening status:</strong>
+                    <span class="status">{{ scheme.eligibility_status }}</span>
+                </p>
+                <p><strong>Screening note:</strong> {{ scheme.eligibility_reason }}</p>
+                <p>
+                    <a href="{{ scheme.official_url }}" target="_blank" rel="noopener noreferrer">
+                        Check official scheme website
+                    </a>
+                </p>
+            </div>
+        {% empty %}
+            <p>No recommendations are available yet.</p>
+        {% endfor %}
+
+        <p><a href="{% url 'scheme_form' %}">Update your answers</a></p>
+    </div>
+</body>
+</html>
