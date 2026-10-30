@@ -1,8 +1,10 @@
 
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import CustomSelect from './CustomSelect'
+
+const API_URL = '/api/schemes/'
 
 
 const demoSchemes = [
@@ -68,11 +70,35 @@ function App() {
     occupation: '',
     income: '',
   })
+  const [schemes, setSchemes] = useState([])
+const [loading, setLoading] = useState(true)
+const [error, setError] = useState('')
 
   const [submitted, setSubmitted] = useState(false)
   const [search, setSearch] = useState('')
   const [showMatchesOnly, setShowMatchesOnly] = useState(false)
   const [selectedScheme, setSelectedScheme] = useState(null)
+
+  useEffect(() => {
+  const fetchSchemes = async () => {
+    try {
+      const response = await fetch(API_URL)
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch schemes')
+      }
+
+      const data = await response.json()
+      setSchemes(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  fetchSchemes()
+}, [])
 
   function updateForm(event) {
     setForm({ ...form, [event.target.name]: event.target.value })
@@ -98,20 +124,24 @@ function App() {
     setSelectedScheme(null)
   }
 
-  const filteredSchemes = demoSchemes.filter((scheme) =>
-    `${scheme.name} ${scheme.category} ${scheme.description}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  )
+  const filteredSchemes = schemes.filter((scheme) =>
+  `${scheme.name} ${scheme.description}`
+    .toLowerCase()
+    .includes(search.toLowerCase())
+)
 
-  const visibleSchemes = filteredSchemes.filter((scheme) => {
+ const visibleSchemes = filteredSchemes.filter(() => {
   if (!showMatchesOnly) return true
-
-  return (
-    submitted &&
-    checkEligibility(scheme, form) === 'Potential Match'
-  )
+  return false
 })
+
+if (loading) {
+  return <div className="app">Loading government schemes...</div>
+}
+
+if (error) {
+  return <div className="app">Error: {error}</div>
+}
 
   return (
     <div className="app">
@@ -359,21 +389,11 @@ function App() {
                 {visibleSchemes.map((scheme) => (
                   <article className="scheme-card" key={scheme.id}>
                     <span className="scheme-category">
-                      {scheme.category}
+                      Government Scheme
                     </span>
                     
-<span
-  className={`eligibility-status ${
-    checkEligibility(scheme, form) === 'Potential Match'
-      ? 'potential-match'
-      : checkEligibility(scheme, form) === 'Criteria Not Matched'
-        ? 'criteria-not-matched'
-        : 'not-checked'
-  }`}
->
-  {submitted
-    ? checkEligibility(scheme, form)
-    : 'Demo - eligibility not checked'}
+<span className="eligibility-status not-checked">
+  Eligibility not verified
 </span>
 
 
@@ -396,14 +416,23 @@ function App() {
                     </button>
 
                     {selectedScheme === scheme.id && (
-                      <div className="scheme-details">
-                        <strong>What to check</strong>
-                        <p>{scheme.eligibility}</p>
-                        <p>
-                          Confirm eligibility, required documents, deadlines
-                          and application instructions on the official portal.
-                        </p>
-                      </div>
+                     <div className="scheme-details">
+  <strong>Eligibility Criteria</strong>
+  <p>{scheme.eligibility_summary}</p>
+
+  <strong>Benefits</strong>
+  <p>{scheme.benefits}</p>
+
+  <strong>Required Documents</strong>
+  <p>{scheme.required_documents || 'Please check the official portal.'}</p>
+
+  <strong>Application Process</strong>
+  <p>{scheme.application_process || 'Please check the official portal.'}</p>
+
+  <a href={scheme.official_url} target="_blank" rel="noreferrer">
+    Visit Official Website →
+  </a>
+</div>
                     )}
                   </article>
                 ))}
