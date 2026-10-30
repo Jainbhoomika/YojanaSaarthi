@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YojanaSaarthi | Find Your Schemes</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 30px 15px;
+            color: #243047;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px #00000010;
+        }
+
+        h1 {
+            color: #174c8c;
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        select,
+        input[type="number"] {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccd3df;
+            border-radius: 7px;
+            background: white;
+            color: #243047;
+            font-size: 15px;
+        }
+
+        .interests label {
+            font-weight: normal;
+            margin-top: 12px;
+        }
+
+        .interests input {
+            margin-right: 8px;
+        }
+
+        button {
+            margin-top: 24px;
+            width: 100%;
+            padding: 14px;
+            border: 0;
+            border-radius: 7px;
+            background: #174c8c;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #103968;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>YojanaSaarthi</h1>
+
+    <p>
+        Enter your details to discover government schemes
+        that may suit your needs.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Exact age -->
+        <label for="age">Your age (in years)</label>
+        <input
+            type="number"
+            id="age"
+            name="age"
+            min="0"
+            max="120"
+            required
+            placeholder="Enter your age"
+        >
+
+        <!-- Age group -->
+        <label for="age_group">Age group</label>
+        <select id="age_group" name="age_group" required>
+            <option value="">Select age group</option>
+            <option>Below 18</option>
+            <option>18–25</option>
+            <option>26–40</option>
+            <option>41–59</option>
+            <option>60 and above</option>
+        </select>
+
+        <!-- State -->
+        <label for="state">State or Union Territory</label>
+        <select id="state" name="state" required>
+            <option value="">Select your state</option>
+            <option>Rajasthan</option>
+            <option>Uttar Pradesh</option>
+            <option>Madhya Pradesh</option>
+            <option>Gujarat</option>
+            <option>Maharashtra</option>
+            <option>Delhi</option>
+            <option>Other</option>
+        </select>
+
+        <!-- Education -->
+        <label for="education">Education</label>
+        <select id="education" name="education" required>
+            <option value="">Select education</option>
+            <option>School student</option>
+            <option>College student</option>
+            <option>Graduate</option>
+            <option>Postgraduate</option>
+            <option>Other</option>
+        </select>
+
+        <!-- Annual family income -->
+        <label for="annual_income">Annual family income</label>
+        <select id="annual_income" name="annual_income" required>
+            <option value="">Select income range</option>
+            <option>Below ₹1 lakh</option>
+            <option>₹1–2 lakh</option>
+            <option>₹2–5 lakh</option>
+            <option>Above ₹5 lakh</option>
+            <option>Prefer not to say</option>
+        </select>
+
+        <!-- Occupation -->
+        <label for="occupation">Occupation</label>
+        <select id="occupation" name="occupation" required>
+            <option value="">Select occupation</option>
+            <option>Student</option>
+            <option>Employed</option>
+            <option>Self-employed</option>
+            <option>Unemployed</option>
+            <option>Homemaker</option>
+            <option>Retired</option>
+            <option>Other</option>
+        </select>
+
+        <!-- Gender -->
+        <label for="gender">Gender (optional)</label>
+        <select id="gender" name="gender">
+            <option value="">Prefer not to say</option>
+            <option>Female</option>
+            <option>Male</option>
+            <option>Other</option>
+        </select>
+
+        <!-- Interests -->
+        <div class="interests">
+            <label>What kind of support are you looking for?</label>
+
+            <label>
+                <input type="checkbox" name="interests"
+                       value="Education and scholarships">
+                Education and scholarships
+            </label>
+
+            <label>
+                <input type="checkbox" name="interests"
+                       value="Financial assistance">
+                Financial assistance
+            </label>
+
+            <label>
+                <input type="checkbox" name="interests"
+                       value="Employment and skills">
+                Employment and skills
+            </label>
+
+            <label>
+                <input type="checkbox" name="interests"
+                       value="Women and child welfare">
+                Women and child welfare
+            </label>
+
+            <label>
+                <input type="checkbox" name="interests"
+                       value="Healthcare and insurance">
+                Healthcare and insurance
+            </label>
+
+            <label>
+                <input type="checkbox" name="interests"
+                       value="Pension and retirement">
+                Pension and retirement
+            </label>
+
+            <label>
+                <input type="checkbox" name="interests"
+                       value="Business and self-employment">
+                Business and self-employment
+            </label>
+        </div>
+
+        <button type="submit">Find My Schemes</button>
+
+    </form>
+</div>
+</body>
+</html>
