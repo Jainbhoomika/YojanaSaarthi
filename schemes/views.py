@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import Scheme
+from .ai.recommendation import recommend_schemes
 
 
 def scheme_list(request):
@@ -64,8 +65,7 @@ def scheme_form(request):
 
 
 def recommendations(request):
-    from schemes.ai_engine import recommend_schemes
-
+    
     profile = request.session.get("scheme_profile")
 
     if not profile:

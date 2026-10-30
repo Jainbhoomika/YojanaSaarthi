@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer
 from sentence_transformers.util import cos_sim
 
 from schemes.models import Scheme
-from schemes.schemes_eligibility import check_eligibility
+from .eligibility import check_eligibility
 
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
