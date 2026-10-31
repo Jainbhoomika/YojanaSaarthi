@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer
 from sentence_transformers.util import cos_sim
 
 from schemes.models import Scheme
-from schemes.schemes_eligibility import check_eligibility
+from .eligibility import evaluate_scheme_criteria
 
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
@@ -18,31 +18,50 @@ def get_model():
 
 
 def build_profile_text(profile):
-    """Convert structured form answers into a search description."""
-
-    fields = [
-        ("Age group", "age_group"),
-        ("State", "state"),
-        ("Education", "education"),
-        ("Annual family income", "annual_income"),
-        ("Occupation", "occupation"),
-        ("Gender", "gender"),
-    ]
+    """Convert the citizen's profile into richer text for semantic matching."""
 
     parts = []
 
-    for label, key in fields:
-        value = profile.get(key)
+    if profile.get("occupation"):
+        parts.append(
+            f"The applicant is a {profile['occupation']}."
+        )
 
-        if value and value != "Prefer not to say":
-            parts.append(f"{label}: {value}")
+    if profile.get("education"):
+        parts.append(
+            f"Education level is {profile['education']}."
+        )
+
+    if profile.get("age_group"):
+        parts.append(
+            f"Age group: {profile['age_group']}."
+        )
+
+    if profile.get("state"):
+        parts.append(
+            f"Lives in {profile['state']}."
+        )
+
+    if profile.get("gender") and profile["gender"] != "Prefer not to say":
+        parts.append(
+            f"Gender: {profile['gender']}."
+        )
+
+    if profile.get("annual_income"):
+        parts.append(
+            f"Annual family income: {profile['annual_income']}."
+        )
 
     interests = profile.get("interests", [])
 
     if isinstance(interests, list) and interests:
-        parts.append("Support needed: " + ", ".join(interests))
+        parts.append(
+            "Looking for schemes related to "
+            + ", ".join(interests)
+            + "."
+        )
 
-    return ". ".join(parts)
+    return " ".join(parts)
 
 
 def recommend_schemes(profile, top_k=5):
@@ -98,7 +117,7 @@ def recommend_schemes(profile, top_k=5):
     for index in ranked_indices[:max(1, top_k)]:
         scheme = schemes[index]
 
-        eligibility = check_eligibility(scheme, profile)
+        eligibility = evaluate_scheme_criteria(scheme, profile)
 
         results.append({
             "name": scheme.name,

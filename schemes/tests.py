@@ -7,8 +7,11 @@ from django.core.management.base import CommandError
 
 from django.urls import reverse
 from django.test import TestCase
-from schemes.models import Scheme
-
+from schemes.models import Scheme, EligibilityCriteria
+from schemes.ai.eligibility import (
+    evaluate_criterion,
+    evaluate_scheme_criteria,
+)
 class SchemeModelTest(TestCase):
     def test_scheme_can_be_created(self):
         scheme = Scheme.objects.create(
@@ -200,3 +203,94 @@ class SchemeAPITest(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+class EligibilityCriterionTest(TestCase):
+
+    def setUp(self):
+        self.scheme = Scheme.objects.create(
+            name="Test Scheme",
+            description="Test description",
+            benefits="Test benefits",
+            eligibility_summary="Test eligibility",
+            official_url="https://example.com",
+            last_verified="2026-10-31"
+        )
+
+        self.criterion = EligibilityCriteria.objects.create(
+            scheme=self.scheme,
+            criterion_type="state",
+            operator="EQUALS",
+            criterion_value="Rajasthan",
+            is_mandatory=True
+        )
+
+    def test_state_matches(self):
+        result = evaluate_criterion(
+            {"state": "Rajasthan"},
+            self.criterion
+        )
+        self.assertTrue(result["matched"])
+
+    def test_state_does_not_match(self):
+        result = evaluate_criterion(
+            {"state": "Gujarat"},
+            self.criterion
+        )
+        self.assertFalse(result["matched"])
+
+    def test_missing_profile_value(self):
+        result = evaluate_criterion(
+            {},
+            self.criterion
+        )
+        self.assertIsNone(result["matched"])
+
+    
+    def test_all_mandatory_criteria_match(self):
+        
+        EligibilityCriteria.objects.create(
+        scheme=self.scheme,
+        criterion_type="gender",
+        operator="EQUALS",
+        criterion_value="Female",
+        is_mandatory=True
+    )
+        self.scheme.eligibility_rules_verified = True
+        self.scheme.save()
+
+
+        result = evaluate_scheme_criteria(
+            self.scheme,
+            {"state": "Rajasthan", "gender": "Female"}
+        )
+
+        self.assertEqual(result["status"], "eligible")
+
+    def test_mandatory_criterion_does_not_match(self):
+        result = evaluate_scheme_criteria(
+            self.scheme,
+            {"state": "Gujarat"}
+        )
+
+        self.assertEqual(result["status"], "not_matched")
+
+    def test_missing_mandatory_information(self):
+        result = evaluate_scheme_criteria(
+            self.scheme,
+            {}
+        )
+
+        self.assertEqual(result["status"], "needs_verification")
+
+    def test_no_criteria_configured(self):
+        new_scheme = Scheme.objects.create(
+            name="Scheme Without Criteria",
+            description="Test description",
+            benefits="Test benefits",
+            eligibility_summary="Test eligibility",
+            official_url="https://example.com",
+            last_verified="2026-10-31"
+        )
+
+        result = evaluate_scheme_criteria(new_scheme, {})
+
+        self.assertEqual(result["status"], "needs_verification")
