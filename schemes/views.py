@@ -3,8 +3,9 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import Scheme
+from django.views.decorators.csrf import csrf_exempt
 from .ai.recommendation import recommend_schemes
-
+import json
 
 def scheme_list(request):
     schemes = Scheme.objects.all()
@@ -43,7 +44,41 @@ def scheme_detail(request, scheme_id):
     }
 
     return JsonResponse(data)
+@csrf_exempt
+def recommendation_api(request):
 
+    if request.method != "POST":
+        return JsonResponse(
+            {"error": "Only POST requests are allowed."},
+            status=405
+        )
+
+    try:
+        profile = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse(
+            {"error": "Invalid JSON data."},
+            status=400
+        )
+
+    if not isinstance(profile, dict):
+        return JsonResponse(
+            {"error": "Profile must be a JSON object."},
+            status=400
+        )
+
+    try:
+        results = recommend_schemes(profile)
+    except ValueError as error:
+        return JsonResponse(
+            {"error": str(error)},
+            status=400
+        )
+
+    return JsonResponse({
+        "count": len(results),
+        "recommendations": results
+    })
 
 def scheme_form(request):
     if request.method == "POST":

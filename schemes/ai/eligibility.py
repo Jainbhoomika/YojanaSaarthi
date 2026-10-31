@@ -1,93 +1,153 @@
+from decimal import Decimal, InvalidOperation
+from schemes.models import EligibilityCriteria
 
-def check_eligibility(scheme, profile):
+
+def evaluate_criterion(profile, criterion):
     """
-    Basic eligibility screening for YojanaSaarthi.
-
-    This is an initial rule-based filter, not an official
-    eligibility decision. Unknown criteria remain unverified.
+    Compare one citizen profile value with one eligibility criterion.
     """
 
-    name = scheme.name.lower()
-    age_group = profile.get("age_group", "")
-    state = profile.get("state", "").strip().lower()
-    occupation = profile.get("occupation", "").strip().lower()
-    interests = profile.get("interests", [])
+    criterion_type = criterion.criterion_type
+    operator = criterion.operator
+    expected_value = criterion.criterion_value
 
-    # Normalize the interests into searchable text.
-    interest_text = " ".join(interests).lower() if isinstance(
-        interests, list
-    ) else str(interests).lower()
+    actual_value = profile.get(criterion_type)
 
-    # Rajasthan-specific scheme.
-    if "mukhyamantri rajshri yojana" in name:
-        if state and state != "rajasthan":
+    # Missing profile information cannot be verified.
+    if actual_value is None or actual_value == "":
+        return {
+            "matched": None,
+            "reason": f"Profile information missing: {criterion_type}"
+        }
+
+    # Normalize text values for comparison.
+    if isinstance(actual_value, str):
+        actual_value = actual_value.strip().lower()
+
+    if operator == "EQUALS":
+        expected = expected_value
+        if isinstance(expected, str):
+            expected = expected.strip().lower()
+
+        matched = actual_value == expected
+
+    elif operator == "IN":
+        if not isinstance(expected_value, list):
+            return {"matched": None, "reason": "Invalid IN criterion value."}
+
+        expected = [
+            value.strip().lower() if isinstance(value, str) else value
+            for value in expected_value
+        ]
+
+        matched = actual_value in expected
+
+    elif operator in ("GREATER_THAN", "LESS_THAN", "BETWEEN"):
+        try:
+            actual = Decimal(str(actual_value))
+
+            if operator == "GREATER_THAN":
+                matched = actual > Decimal(str(expected_value))
+
+            elif operator == "LESS_THAN":
+                matched = actual < Decimal(str(expected_value))
+
+            else:
+                if not isinstance(expected_value, list) or len(expected_value) != 2:
+                    return {"matched": None, "reason": "Invalid BETWEEN criterion value."}
+
+                lower = Decimal(str(expected_value[0]))
+                upper = Decimal(str(expected_value[1]))
+
+                if lower > upper:
+                    return {"matched": None, "reason": "Invalid BETWEEN range."}
+
+                matched = lower <= actual <= upper
+
+        except (InvalidOperation, TypeError, ValueError):
             return {
-                "status": "not_matched",
-                "reason": "This scheme is listed for Rajasthan.",
+                "matched": None,
+                "reason": f"Invalid numeric value for {criterion_type}."
             }
 
+    else:
         return {
-            "status": "needs_verification",
-            "reason": (
-                "Check the girl's birth details, registration, "
-                "benefit milestones and current Rajasthan rules."
-            ),
+            "matched": None,
+            "reason": f"Unsupported operator: {operator}"
         }
 
-    # Schemes for girls or women.
-    if "sukanya samriddhi" in name:
-        return {
-            "status": "needs_verification",
-            "reason": (
-                "Check the girl's age, account-opening rules "
-                "and guardian requirements."
-            ),
-        }
-
-    if "mahila samriddhi" in name:
-        return {
-            "status": "needs_verification",
-            "reason": (
-                "The exact scheme variant and implementing agency "
-                "must be confirmed."
-            ),
-        }
-
-    # Age and occupation are not sufficient to confirm eligibility
-    # for these schemes. More specific profile fields are required.
-    if "shram yogi maandhan" in name:
-        return {
-            "status": "needs_verification",
-            "reason": (
-                "Check age, monthly income, occupation and "
-                "applicable pension-scheme conditions."
-            ),
-        }
-
-    if "pm vishwakarma" in name:
-        return {
-            "status": "needs_verification",
-            "reason": (
-                "Check eligible traditional trade, age, family "
-                "conditions and other scheme exclusions."
-            ),
-        }
-
-    if "suraksha bima" in name:
-        return {
-            "status": "needs_verification",
-            "reason": (
-                "Check age, bank account, consent, premium "
-                "and current scheme conditions."
-            ),
-        }
-
-    # Avoid falsely confirming eligibility for schemes whose
-    # rules have not yet been implemented in this first version.
     return {
-        "status": "needs_verification",
+        "matched": matched,
         "reason": (
-            "Detailed eligibility rules for this scheme have "
-            "not yet been implemented."
-        ),
+            f"{criterion_type} matched."
+            if matched
+            else f"{criterion_type} did not match."
+        )
     }
+
+
+def evaluate_scheme_criteria(scheme, profile):
+    """
+    Evaluate all database criteria associated with a scheme.
+    """
+
+    criteria = scheme.eligibility_criteria.all()
+
+    if not criteria.exists():
+        return {
+            "status": "needs_verification",
+            "reason": "No eligibility criteria have been added for this scheme.",
+            "matched_criteria": [],
+            "unmatched_criteria": [],
+            "unknown_criteria": []
+        }
+
+    matched_criteria = []
+    unmatched_criteria = []
+    unknown_criteria = []
+
+    for criterion in criteria:
+        result = evaluate_criterion(profile, criterion)
+
+        criterion_result = {
+            "criterion": criterion.criterion_type,
+            "mandatory": criterion.is_mandatory,
+            "reason": result["reason"]
+        }
+
+        if result["matched"] is True:
+            matched_criteria.append(criterion_result)
+
+        elif result["matched"] is False:
+            if criterion.is_mandatory:
+                unmatched_criteria.append(criterion_result)
+            else:
+                # An optional criterion mismatch does not disqualify.
+                pass
+
+        else:
+            unknown_criteria.append(criterion_result)
+
+        if unmatched_criteria:
+            status = "not_matched"
+            reason = "One or more mandatory eligibility criteria were not satisfied."
+
+        elif unknown_criteria:
+            status = "needs_verification"
+            reason = "Some eligibility criteria could not be verified."
+
+        elif not scheme.eligibility_rules_verified:
+            status = "needs_verification"
+            reason = "The complete eligibility rules for this scheme have not been verified."
+
+        else:
+            status = "eligible"
+            reason = "All verified eligibility criteria were satisfied."
+    return {
+        "status": status,
+        "reason": reason,
+        "matched_criteria": matched_criteria,
+        "unmatched_criteria": unmatched_criteria,
+        "unknown_criteria": unknown_criteria
+    }
+
