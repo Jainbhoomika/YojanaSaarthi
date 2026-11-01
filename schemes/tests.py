@@ -1,7 +1,8 @@
 import csv
 import tempfile
 from pathlib import Path
-
+from unittest.mock import Mock, patch
+import torch
 from django.core.management import call_command
 from django.core.management.base import CommandError
 
@@ -12,6 +13,8 @@ from schemes.ai.eligibility import (
     evaluate_criterion,
     evaluate_scheme_criteria,
 )
+from schemes.ai.recommendation import recommend_schemes
+
 class SchemeModelTest(TestCase):
     def test_scheme_can_be_created(self):
         scheme = Scheme.objects.create(
@@ -294,3 +297,120 @@ class EligibilityCriterionTest(TestCase):
         result = evaluate_scheme_criteria(new_scheme, {})
 
         self.assertEqual(result["status"], "needs_verification")
+
+class RecommendationRankingTest(TestCase):
+
+    def setUp(self):
+        self.scheme_a = Scheme.objects.create(
+            name="Eligible Scheme",
+            description="Support for students",
+            benefits="Education assistance",
+            eligibility_summary="For eligible students",
+            official_url="https://example.com/a",
+            last_verified="2026-10-31",
+        )
+
+        self.scheme_b = Scheme.objects.create(
+            name="Verification Scheme",
+            description="Support for women",
+            benefits="Financial assistance",
+            eligibility_summary="For women applicants",
+            official_url="https://example.com/b",
+            last_verified="2026-10-31",
+        )
+
+        self.scheme_c = Scheme.objects.create(
+            name="Not Matched Scheme",
+            description="Support for workers",
+            benefits="Employment assistance",
+            eligibility_summary="For workers",
+            official_url="https://example.com/c",
+            last_verified="2026-10-31",
+        )
+
+    @patch("schemes.ai.recommendation.evaluate_scheme_criteria")
+    @patch("schemes.ai.recommendation.cos_sim")
+    @patch("schemes.ai.recommendation.get_model")
+    def test_eligibility_status_has_priority_over_similarity(
+        self, mock_model, mock_cos_sim, mock_eligibility
+    ):
+        mock_model.return_value.encode = Mock(return_value=None)
+
+        # Similarity scores: A=0.70, B=0.90, C=0.95
+        mock_cos_sim.return_value = torch.tensor(
+            [[0.70, 0.90, 0.95]]
+        )
+
+        def eligibility_result(scheme, profile):
+            statuses = {
+                "Eligible Scheme": "eligible",
+                "Verification Scheme": "needs_verification",
+                "Not Matched Scheme": "not_matched",
+            }
+
+            status = statuses[scheme.name]
+
+            return {
+                "status": status,
+                "reason": f"Test result: {status}",
+            }
+
+        mock_eligibility.side_effect = eligibility_result
+
+        results = recommend_schemes(
+            {"occupation": "Student"},
+            top_k=3,
+        )
+
+        names = [item["name"] for item in results]
+
+        self.assertEqual(
+            names,
+            [
+                "Eligible Scheme",
+                "Verification Scheme",
+                "Not Matched Scheme",
+            ],
+        )
+
+        self.assertEqual(
+            results[0]["eligibility_status"],
+            "eligible",
+        )
+
+    @patch("schemes.ai.recommendation.evaluate_scheme_criteria")
+    @patch("schemes.ai.recommendation.cos_sim")
+    @patch("schemes.ai.recommendation.get_model")
+    def test_similarity_ranks_schemes_with_same_eligibility(
+        self, mock_model, mock_cos_sim, mock_eligibility
+    ):
+        mock_model.return_value.encode = Mock(return_value=None)
+
+        mock_cos_sim.return_value = torch.tensor(
+            [[0.70, 0.95, 0.80]]
+        )
+
+        mock_eligibility.return_value = {
+            "status": "eligible",
+            "reason": "All verified criteria matched.",
+        }
+
+        results = recommend_schemes(
+            {"occupation": "Student"},
+            top_k=3,
+        )
+
+        self.assertEqual(
+            results[0]["name"],
+            "Verification Scheme",
+        )
+
+        self.assertEqual(
+            results[1]["name"],
+            "Not Matched Scheme",
+        )
+
+        self.assertEqual(
+            results[2]["name"],
+            "Eligible Scheme",
+        )

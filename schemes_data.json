@@ -1,0 +1,440 @@
+[
+{
+  "model": "schemes.scheme",
+  "pk": 1,
+  "fields": {
+    "name": "Sukanya Samriddhi Account Scheme",
+    "description": "Government-backed savings account for an eligible girl child; not a grant.",
+    "benefits": "Government-backed savings account for an eligible girl child; not a grant. This is not a free cash grant; loan repayment, contributions, premiums or deposits may apply.",
+    "eligibility_summary": "Potential group: girl_child, parent_guardian. Geographic applicability: all_india. Recorded age limits: not specified to 9. No income ceiling stated for opening; account rules apply. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Girl child's birth proof, guardian KYC and account-opening documents.",
+    "application_process": "Confirm current rules with an authorised bank/post office, then submit the account-opening form and KYC documents.",
+    "official_url": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 2,
+  "fields": {
+    "name": "Mukhyamantri Rajshri Yojana",
+    "description": "Rajasthan assistance linked to eligible girl-child birth and health/education milestones.",
+    "benefits": "Rajasthan assistance linked to eligible girl-child birth and health/education milestones.",
+    "eligibility_summary": "Potential group: girl_child, family. Geographic applicability: Rajasthan. Recorded age limits: 0 to 18. Confirm current birth-date, registration, milestone and state conditions. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Birth certificate, Rajasthan residence proof, relevant health/school records and bank details as required.",
+    "application_process": "Confirm current Rajasthan rules and application status with the designated department or authorised service centre.",
+    "official_url": "https://www.myscheme.gov.in/schemes/mry",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 3,
+  "fields": {
+    "name": "PG Indira Gandhi Scholarship for Single Girl Child",
+    "description": "Scholarship for eligible single girl children in qualifying postgraduate study.",
+    "benefits": "Scholarship for eligible single girl children in qualifying postgraduate study.",
+    "eligibility_summary": "Potential group: single_girl_child, postgraduate_student. Geographic applicability: all_india. Do not assume an income ceiling; verify current UGC/NSP notification. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Admission/enrolment proof, marksheets, income certificate where required, category/disability certificate if applicable, bank details; confirm current notice.",
+    "application_process": "Check the latest notice and dates on the official portal, submit the online application and documents, complete institution/state verification, then track status.",
+    "official_url": "https://scholarships.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 4,
+  "fields": {
+    "name": "National Means-cum-Merit Scholarship Scheme",
+    "description": "Merit-cum-means scholarship for eligible students continuing in secondary school after selection.",
+    "benefits": "Merit-cum-means scholarship for eligible students continuing in secondary school after selection.",
+    "eligibility_summary": "Potential group: school_student. Geographic applicability: all_india. Income ceiling and marks/selection rules must come from current notification. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Admission/enrolment proof, marksheets, income certificate where required, category/disability certificate if applicable, bank details; confirm current notice.",
+    "application_process": "Check the latest notice and dates on the official portal, submit the online application and documents, complete institution/state verification, then track status.",
+    "official_url": "https://scholarships.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 5,
+  "fields": {
+    "name": "PM YASASVI Top Class Education for OBC, EBC and DNT Students",
+    "description": "Education support for eligible students in specified institutions/courses.",
+    "benefits": "Education support for eligible students in specified institutions/courses.",
+    "eligibility_summary": "Potential group: OBC_student, EBC_student, DNT_student, college_student. Geographic applicability: all_india. Category, institution and family-income limits must come from current notification. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Admission/enrolment proof, marksheets, income certificate where required, category/disability certificate if applicable, bank details; confirm current notice.",
+    "application_process": "Check the latest notice and dates on the official portal, submit the online application and documents, complete institution/state verification, then track status.",
+    "official_url": "https://scholarships.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 6,
+  "fields": {
+    "name": "Central Sector Scheme of Scholarship for College and University Students",
+    "description": "Merit-based scholarship for eligible college/university students.",
+    "benefits": "Merit-based scholarship for eligible college/university students.",
+    "eligibility_summary": "Potential group: college_student, university_student. Geographic applicability: all_india. Family income ceiling and academic eligibility must come from current NSP notification. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Admission/enrolment proof, marksheets, income certificate where required, category/disability certificate if applicable, bank details; confirm current notice.",
+    "application_process": "Check the latest notice and dates on the official portal, submit the online application and documents, complete institution/state verification, then track status.",
+    "official_url": "https://scholarships.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 7,
+  "fields": {
+    "name": "AICTE Saksham Scholarship",
+    "description": "Scholarship for eligible students with disabilities in approved technical programmes.",
+    "benefits": "Scholarship for eligible students with disabilities in approved technical programmes.",
+    "eligibility_summary": "Potential group: student_with_disability, technical_student. Geographic applicability: all_india. Verify income ceiling and course requirements from current notification. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Admission/enrolment proof, marksheets, income certificate where required, category/disability certificate if applicable, bank details; confirm current notice.",
+    "application_process": "Check the latest notice and dates on the official portal, submit the online application and documents, complete institution/state verification, then track status.",
+    "official_url": "https://scholarships.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 8,
+  "fields": {
+    "name": "PM Scholarship Scheme for eligible CAPF and Assam Rifles wards",
+    "description": "Scholarship for eligible wards in specified service categories and professional courses.",
+    "benefits": "Scholarship for eligible wards in specified service categories and professional courses.",
+    "eligibility_summary": "Potential group: eligible_dependent_ward, professional_course_student. Geographic applicability: all_india. Service/ward status, course and academic conditions apply; check current rules. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Admission/enrolment proof, marksheets, income certificate where required, category/disability certificate if applicable, bank details; confirm current notice.",
+    "application_process": "Check the latest notice and dates on the official portal, submit the online application and documents, complete institution/state verification, then track status.",
+    "official_url": "https://scholarships.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 9,
+  "fields": {
+    "name": "Pradhan Mantri Matru Vandana Yojana",
+    "description": "Maternity benefit for eligible pregnant/lactating women subject to scheme conditions and exclusions.",
+    "benefits": "Maternity benefit for eligible pregnant/lactating women subject to scheme conditions and exclusions.",
+    "eligibility_summary": "Potential group: pregnant_woman, lactating_mother. Geographic applicability: all_india. Eligibility categories, exclusions and benefit conditions need current official guidelines. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Identity proof, pregnancy/birth records, bank details and eligibility documents required by current rules.",
+    "application_process": "Check current rules with the official portal or local Anganwadi/health facility, register and submit required records.",
+    "official_url": "https://wcd.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 10,
+  "fields": {
+    "name": "Pradhan Mantri Ujjwala Yojana 2.0",
+    "description": "LPG connection support for eligible adult women in households meeting current category rules.",
+    "benefits": "LPG connection support for eligible adult women in households meeting current category rules.",
+    "eligibility_summary": "Potential group: adult_woman, eligible_household. Geographic applicability: all_india. Recorded age limits: 18 to not specified. Category/household based; no other LPG connection and current scheme conditions apply. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "KYC, residence proof, ration card/family composition proof and bank details as required.",
+    "application_process": "Confirm eligibility and apply through the official process or authorised LPG distributor; complete document verification.",
+    "official_url": "https://www.myscheme.gov.in/schemes/pmuy2",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 11,
+  "fields": {
+    "name": "Indira Gandhi National Widow Pension Scheme",
+    "description": "Social pension assistance for eligible widows; state rules and top-ups vary.",
+    "benefits": "Social pension assistance for eligible widows; state rules and top-ups vary.",
+    "eligibility_summary": "Potential group: widow, low_income_household. Geographic applicability: all_india_state_rules_apply. Generally linked to eligible low-income/BPL status; verify state age and criteria. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Age proof, identity/KYC, bank account details, and income/category/occupation proof where required; confirm current rules.",
+    "application_process": "Check current official guidelines and whether applications are open; apply through the official portal or authorised office, submit documents and track status.",
+    "official_url": "https://nsap.nic.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 12,
+  "fields": {
+    "name": "Mahila Samriddhi Yojana (variant to confirm)",
+    "description": "Concessional financial assistance for eligible women in income-generating activities; credit, not grant.",
+    "benefits": "Concessional financial assistance for eligible women in income-generating activities; credit, not grant. This is not a free cash grant; loan repayment, contributions, premiums or deposits may apply.",
+    "eligibility_summary": "Potential group: eligible_low_income_woman, self_employed_woman. Geographic applicability: check_state_channelising_agency. Recorded age limits: 18 to 55. A listing describes family income below ₹3 lakh for a specific variant; verify agency and current rules. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Exact document list not confirmed in this seed record; check the latest official scheme guideline.",
+    "application_process": "Check current official guidelines and whether applications are open; apply through the official portal or authorised office, submit documents and track status.",
+    "official_url": "https://www.myscheme.gov.in/schemes/cbssc-msy",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 13,
+  "fields": {
+    "name": "Pradhan Mantri Suraksha Bima Yojana",
+    "description": "Voluntary accident insurance through participating banks/post offices; not a cash grant.",
+    "benefits": "Voluntary accident insurance through participating banks/post offices; not a cash grant. This is not a free cash grant; loan repayment, contributions, premiums or deposits may apply.",
+    "eligibility_summary": "Potential group: adult_bank_account_holder. Geographic applicability: all_india. Recorded age limits: 18 to 70. No general income ceiling; account, consent, premium and renewal conditions apply. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Exact document list not confirmed in this seed record; check the latest official scheme guideline.",
+    "application_process": "Check current official guidelines and whether applications are open; apply through the official portal or authorised office, submit documents and track status.",
+    "official_url": "https://jansuraksha.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 14,
+  "fields": {
+    "name": "PM Vishwakarma",
+    "description": "Support for eligible workers in listed traditional trades, including training/toolkit support and credit.",
+    "benefits": "Support for eligible workers in listed traditional trades, including training/toolkit support and credit.",
+    "eligibility_summary": "Potential group: traditional_artisan, craftsperson. Geographic applicability: all_india. Recorded age limits: 18 to not specified. Trade, family and exclusion criteria apply; do not assume a universal income ceiling. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Exact document list not confirmed in this seed record; check the latest official scheme guideline.",
+    "application_process": "Check current official guidelines and whether applications are open; apply through the official portal or authorised office, submit documents and track status.",
+    "official_url": "https://pmvishwakarma.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 15,
+  "fields": {
+    "name": "Pradhan Mantri Mudra Yojana",
+    "description": "Loans through participating lenders for eligible micro/small non-farm businesses; repayable credit.",
+    "benefits": "Loans through participating lenders for eligible micro/small non-farm businesses; repayable credit. This is not a free cash grant; loan repayment, contributions, premiums or deposits may apply.",
+    "eligibility_summary": "Potential group: micro_business_owner, self_employed_adult. Geographic applicability: all_india. No universal household-income ceiling; lender, business and credit assessment apply. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "KYC and business/project documents requested by the participating lender.",
+    "application_process": "Apply through a participating lender with KYC and business/project documents; lender assessment and approval apply.",
+    "official_url": "https://www.mudra.org.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 16,
+  "fields": {
+    "name": "PM SVANidhi",
+    "description": "Working-capital loan support for eligible street vendors; repayable credit.",
+    "benefits": "Working-capital loan support for eligible street vendors; repayable credit. This is not a free cash grant; loan repayment, contributions, premiums or deposits may apply.",
+    "eligibility_summary": "Potential group: street_vendor. Geographic applicability: all_india_local_body_rules_apply. Vendor identification/certification and local-body requirements apply. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Vendor certificate or letter of recommendation where applicable, identity proof and bank details.",
+    "application_process": "Confirm vendor eligibility with the official portal/local body or authorised lender, submit records and track the application.",
+    "official_url": "https://pmsvanidhi.mohua.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 17,
+  "fields": {
+    "name": "PM-KISAN Samman Nidhi",
+    "description": "Income support for eligible landholding farmer families subject to exclusions and verification.",
+    "benefits": "Income support for eligible landholding farmer families subject to exclusions and verification.",
+    "eligibility_summary": "Potential group: eligible_landholding_farmer_family. Geographic applicability: all_india. Landholding and specified exclusion categories apply; not a general low-income benefit. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Identity proof, land records, bank details and e-KYC as required.",
+    "application_process": "Check eligibility on the official portal, complete registration/e-KYC and land verification as required, then track status.",
+    "official_url": "https://pmkisan.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 18,
+  "fields": {
+    "name": "Pradhan Mantri Shram Yogi Maandhan",
+    "description": "Voluntary contributory pension for eligible unorganised workers.",
+    "benefits": "Voluntary contributory pension for eligible unorganised workers. This is not a free cash grant; loan repayment, contributions, premiums or deposits may apply.",
+    "eligibility_summary": "Potential group: unorganised_sector_worker. Geographic applicability: all_india. Recorded age limits: 18 to 40. Commonly published criterion is monthly income up to ₹15,000; verify current official rules. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Age proof, identity/KYC, bank account details, and income/category/occupation proof where required; confirm current rules.",
+    "application_process": "Check current official guidelines and whether applications are open; apply through the official portal or authorised office, submit documents and track status.",
+    "official_url": "https://maandhan.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 19,
+  "fields": {
+    "name": "Ayushman Bharat PM-JAY",
+    "description": "Health cover for eligible beneficiaries in scheme database and applicable expansions.",
+    "benefits": "Health cover for eligible beneficiaries in scheme database and applicable expansions.",
+    "eligibility_summary": "Potential group: eligible_vulnerable_household. Geographic applicability: all_india_state_rules_apply. Database/category-based; eligibility is not determined by income alone. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Identity documents and confirmation of eligibility in the beneficiary database; state-specific documents may apply.",
+    "application_process": "Check beneficiary eligibility on the official portal and follow its instructions for verification and accessing covered services.",
+    "official_url": "https://beneficiary.nha.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 20,
+  "fields": {
+    "name": "Pradhan Mantri Awas Yojana – Urban 2.0",
+    "description": "Housing support for eligible urban households; conditions differ by component.",
+    "benefits": "Housing support for eligible urban households; conditions differ by component.",
+    "eligibility_summary": "Potential group: eligible_urban_household. Geographic applicability: urban_india_state_rules_apply. Income bands, home ownership and component rules need current guideline validation. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Identity and residence proof, income documents, bank details and household/property declarations as required.",
+    "application_process": "Check current official guidelines and whether applications are open; apply through the official portal or authorised office, submit documents and track status.",
+    "official_url": "https://pmay-urban.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 21,
+  "fields": {
+    "name": "Pradhan Mantri Jan-Dhan Yojana",
+    "description": "Basic bank-account access; linked insurance/overdraft benefits have separate conditions.",
+    "benefits": "Basic bank-account access; linked insurance/overdraft benefits have separate conditions.",
+    "eligibility_summary": "Potential group: adult_without_basic_bank_account. Geographic applicability: all_india. Recorded age limits: 10 to not specified. No income ceiling for basic account opening; linked benefits have separate rules. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "KYC documents or permitted small-account documents accepted by the participating bank.",
+    "application_process": "Visit a participating bank or authorised outlet, submit accepted KYC documents and complete the account-opening process.",
+    "official_url": "https://pmjdy.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 22,
+  "fields": {
+    "name": "Atal Pension Yojana",
+    "description": "Voluntary contributory pension; payout depends on contribution choice and scheme rules.",
+    "benefits": "Voluntary contributory pension; payout depends on contribution choice and scheme rules. This is not a free cash grant; loan repayment, contributions, premiums or deposits may apply.",
+    "eligibility_summary": "Potential group: adult_retirement_planner. Geographic applicability: all_india. Recorded age limits: 18 to 40. Entry age and account rules apply; income-tax payer exclusion applies under current rules. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Age proof, identity/KYC, bank account details, and income/category/occupation proof where required; confirm current rules.",
+    "application_process": "Check current official guidelines and whether applications are open; apply through the official portal or authorised office, submit documents and track status.",
+    "official_url": "https://www.myscheme.gov.in/schemes/apy",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 23,
+  "fields": {
+    "name": "Indira Gandhi National Old Age Pension Scheme",
+    "description": "Social assistance for eligible older people; state rules and top-ups may apply.",
+    "benefits": "Social assistance for eligible older people; state rules and top-ups may apply.",
+    "eligibility_summary": "Potential group: senior_citizen, low_income_household. Geographic applicability: all_india_state_rules_apply. Recorded age limits: 60 to not specified. Linked to eligible low-income/BPL status and age; confirm state-specific requirements. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Age proof, identity/KYC, bank account details, and income/category/occupation proof where required; confirm current rules.",
+    "application_process": "Check current official guidelines and whether applications are open; apply through the official portal or authorised office, submit documents and track status.",
+    "official_url": "https://nsap.nic.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 24,
+  "fields": {
+    "name": "Senior Citizens’ Savings Scheme",
+    "description": "Government-backed savings product; investment product, not welfare grant.",
+    "benefits": "Government-backed savings product; investment product, not welfare grant. This is not a free cash grant; loan repayment, contributions, premiums or deposits may apply.",
+    "eligibility_summary": "Potential group: senior_citizen, eligible_retired_person. Geographic applicability: all_india. Recorded age limits: 60 to not specified. Eligibility mainly age/retirement based, not low-income; current deposit/rate rules apply. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Age or eligible retirement proof, KYC and funding-account documents.",
+    "application_process": "Confirm current rules with an authorised bank/post office, then submit the account-opening form and KYC documents.",
+    "official_url": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.scheme",
+  "pk": 25,
+  "fields": {
+    "name": "National Scholarship Portal – scholarship directory placeholder",
+    "description": "Directory placeholder only, not one scheme. Replace with individually verified scholarship records.",
+    "benefits": "Directory placeholder only, not one scheme. Replace with individually verified scholarship records.",
+    "eligibility_summary": "Potential group: eligible_school_student, eligible_college_student, student_with_disability. Geographic applicability: all_india_state_rules_apply. Varies by individual scholarship; do not match as one scheme. Confirm all mandatory conditions, exclusions and current application dates from the latest official guideline.",
+    "required_documents": "Admission/enrolment proof, marksheets, income certificate where required, category/disability certificate if applicable, bank details; confirm current notice.",
+    "application_process": "Check the latest notice and dates on the official portal, submit the online application and documents, complete institution/state verification, then track status.",
+    "official_url": "https://scholarships.gov.in/",
+    "last_verified": "2026-10-24",
+    "eligibility_rules_verified": false
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 2,
+  "fields": {
+    "scheme": 3,
+    "criterion_type": "state",
+    "operator": "EQUALS",
+    "criterion_value": "Rajasthan",
+    "is_mandatory": true,
+    "source_reference": ""
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 3,
+  "fields": {
+    "scheme": 1,
+    "criterion_type": "gender",
+    "operator": "EQUALS",
+    "criterion_value": "Female",
+    "is_mandatory": true,
+    "source_reference": ""
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 4,
+  "fields": {
+    "scheme": 2,
+    "criterion_type": "age",
+    "operator": "BETWEEN",
+    "criterion_value": [
+      0,
+      18
+    ],
+    "is_mandatory": true,
+    "source_reference": ""
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 5,
+  "fields": {
+    "scheme": 3,
+    "criterion_type": "gender",
+    "operator": "EQUALS",
+    "criterion_value": "Female",
+    "is_mandatory": true,
+    "source_reference": ""
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 6,
+  "fields": {
+    "scheme": 3,
+    "criterion_type": "education",
+    "operator": "EQUALS",
+    "criterion_value": "Postgraduate",
+    "is_mandatory": true,
+    "source_reference": ""
+  }
+}
+]

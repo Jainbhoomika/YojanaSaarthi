@@ -111,10 +111,9 @@ def recommend_schemes(profile, top_k=5):
     scores = cos_sim(user_embedding, scheme_embeddings)[0]
     ranked_indices = scores.argsort(descending=True).tolist()
 
-    
     results = []
 
-    for index in ranked_indices[:max(1, top_k)]:
+    for index in ranked_indices:
         scheme = schemes[index]
 
         eligibility = evaluate_scheme_criteria(scheme, profile)
@@ -130,4 +129,18 @@ def recommend_schemes(profile, top_k=5):
             "eligibility_reason": eligibility["reason"],
         })
 
-    return results
+    # Prioritize verified eligible schemes, then schemes requiring verification.
+    status_priority = {
+        "eligible": 0,
+        "needs_verification": 1,
+        "not_matched": 2,
+    }
+
+    results.sort(
+        key=lambda item: (
+            status_priority.get(item["eligibility_status"], 3),
+            -item["similarity_score"],
+        )
+    )
+
+    return results[:max(1, top_k)]
