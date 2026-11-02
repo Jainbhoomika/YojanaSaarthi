@@ -16,6 +16,24 @@ const emptyProfile: CitizenProfile = {
   category: 'General',
   interests: [],
 }
+function getEligibilityStatus(scheme: Scheme) {
+  const statusLine = scheme.eligibility.find(item =>
+    item.startsWith('Status:')
+  )
+
+  const status = statusLine?.replace('Status:', '').trim()
+
+  switch (status) {
+    case 'eligible':
+      return 'Potentially eligible'
+    case 'not_matched':
+      return 'Criteria not matched'
+    case 'needs_verification':
+      return 'Needs verification'
+    default:
+      return 'Status unavailable'
+  }
+}
 export default function App() {
   const [page, setPage] = useState<Page>('overview')
   const [profile, setProfile] = useState<CitizenProfile>(emptyProfile)
@@ -36,7 +54,12 @@ export default function App() {
   ), [schemes, category, search])
 
   const navigate = (next: Page) => { setPage(next); setSelected(null); setMobileOpen(false) }
-  const update = (key: keyof CitizenProfile, value: string | number) => setProfile(p => ({ ...p, [key]: value }))
+  const update = (
+    key: keyof CitizenProfile,
+    value: string | number | string[]
+  ) => {
+    setProfile(p => ({ ...p, [key]: value }))
+  }
 
   async function submitProfile(e: React.FormEvent) {
     e.preventDefault()
@@ -95,10 +118,107 @@ export default function App() {
           <label>Occupation<select value={profile.occupation} onChange={e => update('occupation', e.target.value)}>{['Student','Farmer','Self-employed','Salaried','Homemaker','Unemployed','Other'].map(x => <option key={x}>{x}</option>)}</select></label>
           <label>Education level<select value={profile.education} onChange={e => update('education', e.target.value)}>{['Undergraduate','School student','Graduate','Postgraduate','No formal education','Other'].map(x => <option key={x}>{x}</option>)}</select></label>
           <label>Category<select value={profile.category} onChange={e => update('category', e.target.value)}>{['General','OBC','SC','ST','EWS','Prefer not to say'].map(x => <option key={x}>{x}</option>)}</select></label>
-        </div><div className="privacy-note"><ShieldCheck size={17}/><span><b>Your details are used for this demo only.</b> Avoid entering sensitive identity numbers or bank details.</span></div><div className="form-footer"><span>Usually takes less than 2 minutes</span><button className="btn-primary" disabled={loading}>{loading ? 'Finding schemes…' : 'Find my schemes'} <ArrowRight size={16}/></button></div></form></section>}
+          <label>Gender
+            <select
+              value={profile.gender}
+              onChange={e => update('gender', e.target.value)}
+            >
+              <option value="">Prefer not to say</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+        </div>
+        <div className="interests-field">
+          <label>Areas of interest</label>
+          <p>Select the areas where you would like to discover government schemes.</p>
 
-        {page === 'schemes' && <section className="page-section"><div className="page-intro"><div className="eyebrow muted">SCHEME DISCOVERY</div><h1>Explore opportunities.</h1><p>Browse government support programmes and learn what to check before applying.</p></div><div className="notice"><CircleHelp size={17}/>{notice}</div><div className="filter-row"><div className="search-box"><Search size={18}/><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search schemes or benefits…"/></div><div className="select-filter"><Filter size={16}/><select value={category} onChange={e => setCategory(e.target.value)}>{['All','Agriculture','Housing','Education','Business'].map(x => <option key={x}>{x}</option>)}</select><ChevronDown size={14}/></div></div><div className="results-label">{filtered.length} SCHEMES TO EXPLORE <span>•</span> BASED ON DEMO DATA</div><div className="scheme-grid">{filtered.map(s => <article className="scheme-card" key={s.id}><div className="scheme-card-top"><span className="scheme-category">{s.category}</span><span className="match-score">{s.match}% match*</span></div><h3>{s.name}</h3><p className="ministry">{s.ministry}</p><p className="scheme-desc">{s.description}</p><div className="benefit"><b>Potential benefit</b><span>{s.benefit}</span></div><button className="text-button" onClick={() => setSelected(s)}>View scheme details <ArrowRight size={15}/></button></article>)}</div>{filtered.length === 0 && <div className="empty-state">No schemes match that search. Try another keyword or category.</div>}<p className="footnote">*Match percentages are illustrative demo values, not calculated eligibility scores. Scheme terms can change; always verify with the official scheme portal or authorized department.</p>
-          {selected && <div className="modal-backdrop" onClick={() => setSelected(null)}><div className="detail-modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setSelected(null)}><X/></button><span className="scheme-category">{selected.category}</span><h2>{selected.name}</h2><p className="ministry">{selected.ministry}</p><p>{selected.description}</p><h3>Potential benefit</h3><p>{selected.benefit}</p><h3>Eligibility pointers</h3><ul>{selected.eligibility.map(x => <li key={x}>{x}</li>)}</ul><h3>Documents to check</h3><ul>{selected.documents.map(x => <li key={x}>{x}</li>)}</ul><h3>How to proceed</h3><ol>{selected.howToApply.map(x => <li key={x}>{x}</li>)}</ol><button className="btn-primary full-button" onClick={() => navigate('assistant')}>Ask assistant about this scheme <ArrowRight size={16}/></button></div></div>}
+          <div className="interest-options">
+            {[
+              'Education',
+              'Employment',
+              'Agriculture',
+              'Housing',
+              'Healthcare',
+              'Business',
+              'Women Welfare',
+              'Skill Development',
+            ].map(item => (
+              <label key={item} className="interest-option">
+                <input
+                  type="checkbox"
+                  checked={profile.interests.includes(item)}
+                  onChange={e => {
+                    const updated = e.target.checked
+                      ? [...profile.interests, item]
+                      : profile.interests.filter(x => x !== item)
+
+                    update('interests', updated)
+                  }}
+                />
+                {item}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="privacy-note"><ShieldCheck size={17}/><span><b>Your details are used for this demo only.</b> Avoid entering sensitive identity numbers or bank details.</span></div><div className="form-footer"><span>Usually takes less than 2 minutes</span><button className="btn-primary" disabled={loading}>{loading ? 'Finding schemes…' : 'Find my schemes'} <ArrowRight size={16}/></button></div></form></section>}
+
+        {page === 'schemes' && <section className="page-section">
+        <div className="page-intro">
+          <div className="eyebrow muted">SCHEME DISCOVERY</div>
+          <h1>Explore opportunities.</h1>
+          <p>Browse government support programmes and learn what to check before applying.</p>
+          </div>
+          <div className="notice"><CircleHelp size={17}/>{notice}
+          </div>
+          <div className="filter-row">
+            <div className="search-box"><Search size={18}/><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search schemes or benefits…"/></div>
+            <div className="select-filter"><Filter size={16}/><select value={category} onChange={e => setCategory(e.target.value)}>{['All','Agriculture','Housing','Education','Business'].map(x => <option key={x}>{x}</option>)}</select><ChevronDown size={14}/></div></div>
+            <div className="results-label">
+              {filtered.length} SCHEMES TO EXPLORE
+              <span>•</span> PERSONALIZED RECOMMENDATIONS
+            </div>
+            <div className="scheme-grid">{filtered.map(s => <article className="scheme-card" key={s.id}>
+              <div className="scheme-card-top">
+              <span className="match-score">
+                {s.match}% relevance*
+              </span>
+            </div>
+            <div className="eligibility-status">
+              {getEligibilityStatus(s)}
+            </div>
+            <h3>{s.name}</h3>            
+            <p className="scheme-desc">{s.description}</p>
+            <div className="benefit"><b>Potential benefit</b><span>{s.benefit}</span></div>
+            <button className="text-button" onClick={() => setSelected(s)}>View scheme details <ArrowRight size={15}/></button></article>)}</div>{filtered.length === 0 && 
+            <div className="empty-state">No schemes match that search. Try another keyword or category.</div>}
+            <p className="footnote">
+              *Relevance percentages indicate similarity between your profile
+              and scheme information. They do not represent confirmed eligibility.
+              Please verify eligibility and application details through official
+              government sources.
+            </p>
+          {selected && <div className="modal-backdrop" onClick={() => setSelected(null)}><div className="detail-modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setSelected(null)}><X/></button><h2>{selected.name}</h2><p>{selected.description}</p><h3>Potential benefit</h3><p>{selected.benefit}</p><h3>Eligibility pointers</h3><ul>{selected.eligibility.map(x => <li key={x}>{x}</li>)}</ul><h3>Documents to check</h3><ul>{selected.documents.map(x => <li key={x}>{x}</li>)}</ul><h3>How to proceed</h3><ol>{selected.howToApply.map(x => <li key={x}>{x}</li>)}</ol>
+          {selected.officialUrl && (
+            <div className="official-link-section">
+              <h3>Official scheme website</h3>
+              <a
+                href={selected.officialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Visit official portal <ArrowRight size={14} />
+              </a>
+            </div>
+          )}
+
+          {selected.lastVerified && (
+            <p className="verification-date">
+              Last verified: {selected.lastVerified}
+            </p>
+          )}
+          <button className="btn-primary full-button" onClick={() => navigate('assistant')}>Ask assistant about this scheme <ArrowRight size={16}/></button></div></div>}
         </section>}
 
         {page === 'assistant' && <section className="page-section"><div className="page-intro"><div className="eyebrow muted">YOUR APPLICATION COMPANION</div><h1>Questions are welcome.</h1><p>Get a simpler explanation of scheme information and common application terms.</p></div><div className="assistant-layout"><div className="assistant-main"><div className="chat-head"><div className="bot-avatar"><Bot/></div><div><b>YojanaSaarthi Assistant</b><small><span className="online-dot"/> Demo assistant · General guidance</small></div><span className="ai-label"><Sparkles size={13}/> AI GUIDE</span></div><div className="chat-body"><div className="message bot-message"><div className="mini-bot"><Bot size={16}/></div><div><b>Namaste! How can I help?</b><p>I can help explain scheme terms, document lists and common application steps. Ask in everyday language.</p></div></div>{answer && <div className="message bot-message"><div className="mini-bot"><Bot size={16}/></div><div><b>Here's some guidance</b><p>{answer}</p></div></div>}</div><form className="chat-input" onSubmit={submitQuestion}><input value={question} onChange={e => setQuestion(e.target.value)} placeholder="E.g. What is an income certificate?"/><button className="btn-primary" disabled={asking || !question.trim()}>{asking ? 'Thinking…' : 'Send'} <ArrowRight size={15}/></button></form><div className="chat-disclaimer">This is general demo guidance, not legal advice or an official government response.</div></div><aside className="suggestions"><h3>Try asking</h3>{['What is an income certificate?','How do I prepare my documents?','What does eligibility mean?','How can I check my application status?'].map(q => <button key={q} onClick={() => setQuestion(q)}>{q}<ArrowRight size={14}/></button>)}<div className="suggestion-note"><ShieldCheck size={17}/><p>Never share Aadhaar numbers, passwords, OTPs or bank credentials in this chat.</p></div></aside></div></section>}
