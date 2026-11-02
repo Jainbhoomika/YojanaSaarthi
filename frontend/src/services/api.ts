@@ -126,7 +126,22 @@ export async function askAssistant(
   schemeName: string
 ): Promise<string> {
   if (USE_MOCK) {
-    return `Here is a simple way to approach this for ${schemeName}: first read the latest official scheme guidelines, then keep your identity, address and eligibility documents ready. The exact requirements can vary by applicant and location. This demo assistant does not submit applications or verify eligibility.`
+    const q = question.toLowerCase()
+
+    if (q.includes('income certificate')) {
+      return 'An income certificate is an official document issued by a competent government authority that records your family or individual income. It may be requested for scholarships, fee concessions or government schemes. Check your state portal or local tehsil/SDM office for the exact process and documents.'
+    }
+    if (q.includes('document')) {
+      return 'Start by checking the scheme’s official document checklist. Commonly requested items may include proof of identity, address, income, bank details and education or occupation proof—but requirements vary. Do not share Aadhaar numbers, OTPs or bank credentials in this chat.'
+    }
+    if (q.includes('eligibility')) {
+      return 'Eligibility means the conditions an applicant must meet to apply for a scheme. These can include age, income, state, occupation, category or education. Read the official scheme guidelines and confirm your details before applying.'
+    }
+    if (q.includes('application status') || q.includes('status')) {
+      return 'To check an application status, visit the official portal where you applied and look for “Track Application” or “Application Status”. You may need an application/reference number. Never share OTPs or passwords here.'
+    }
+
+    return `For your question about ${schemeName}, start by checking the latest official scheme guidelines and the relevant government portal. Requirements can vary by scheme, applicant and location. This demo assistant provides general guidance only; it does not submit applications or verify eligibility.`
   }
 
   const data = await request<{ answer: string }>(
