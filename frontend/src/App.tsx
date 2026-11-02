@@ -1,19 +1,21 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowRight, BadgeCheck, BookOpen, Bot, CheckCircle2, ChevronDown, CircleHelp, FileText, Filter, HeartHandshake, Home, Landmark, Menu, MessageCircle, Search, ShieldCheck, Sparkles, UserRound, X } from 'lucide-react'
 import type { CitizenProfile, Scheme } from './types'
 import { demoSchemes } from './data/schemes'
 import { askAssistant, getRecommendations } from './services/api'
 
-type Page = 'overview' | 'profile' | 'schemes' | 'assistant'
+type Page = 'overview' | 'profile' | 'schemes' | 'eligibility' | 'documents' | 'tracker' | 'assistant'
+type ApplicationEntry = { id: string; schemeId: string; status: string; date: string; reference: string; notes: string }
+type ChatMessage = { id: number; role: 'user' | 'assistant'; text: string }
 const emptyProfile: CitizenProfile = {
   name: '',
-  age: 21,
-  state: 'Rajasthan',
-  annualIncome: 200000,
-  occupation: 'Student',
-  education: 'Undergraduate',
+  age: 0,
+  state: '',
+  annualIncome: 0,
+  occupation: '',
+  education: '',
   gender: '',
-  category: 'General',
+  category: '',
   interests: [],
 }
 function getEligibilityStatus(scheme: Scheme) {
@@ -39,14 +41,39 @@ export default function App() {
   const [profile, setProfile] = useState<CitizenProfile>(emptyProfile)
   const [schemes, setSchemes] = useState<Scheme[]>(demoSchemes)
   const [selected, setSelected] = useState<Scheme | null>(null)
+  const [eligibilitySchemeId, setEligibilitySchemeId] = useState(demoSchemes[0]?.id ?? '')
+  const [eligibilityChecks, setEligibilityChecks] = useState<Record<string, boolean>>({})
+  const [applications, setApplications] = useState<ApplicationEntry[]>(() => {
+    try { return JSON.parse(localStorage.getItem('yojanasaarthi-applications') || '[]') }
+    catch { return [] }
+  })
+  useEffect(() => { localStorage.setItem('yojanasaarthi-applications', JSON.stringify(applications)) }, [applications])
+  const [trackerSchemeId, setTrackerSchemeId] = useState(demoSchemes[0]?.id ?? '')
+  const [trackerStatus, setTrackerStatus] = useState('Not started')
+  const [trackerDate, setTrackerDate] = useState(new Date().toISOString().slice(0, 10))
+  const [trackerReference, setTrackerReference] = useState('')
+  const [trackerNotes, setTrackerNotes] = useState('')
+  const [documentChecks, setDocumentChecks] = useState<Record<string, boolean>>(() => {
+    try { return JSON.parse(localStorage.getItem('yojanasaarthi-document-checks') || '{}') }
+    catch { return {} }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('yojanasaarthi-document-checks', JSON.stringify(documentChecks))
+  }, [documentChecks])
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('All')
   const [loading, setLoading] = useState(false)
   const [notice, setNotice] = useState('Demo mode is active. Scheme information is illustrative; confirm details on official government portals.')
   const [question, setQuestion] = useState('')
-  const [answer, setAnswer] = useState('')
+  const [messages, setMessages] = useState<ChatMessage[]>([])
   const [asking, setAsking] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const chatEndRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [messages, asking])
 
   const filtered = useMemo(() => schemes.filter(s =>
     (category === 'All' || s.category === category) &&
@@ -76,19 +103,48 @@ export default function App() {
     } finally { setLoading(false) }
   }
 
+  async function sendQuestion(questionText: string) {
+    const currentQuestion = questionText.trim()
+    if (!currentQuestion || asking) return
+
+    setMessages(previous => [
+      ...previous,
+      { id: Date.now(), role: 'user', text: currentQuestion },
+    ])
+    setQuestion('')
+    setAsking(true)
+
+    try {
+      const response = await askAssistant(
+        currentQuestion,
+        selected?.name || 'government schemes'
+      )
+      setMessages(previous => [
+        ...previous,
+        { id: Date.now() + 1, role: 'assistant', text: response },
+      ])
+    } catch {
+      setMessages(previous => [
+        ...previous,
+        { id: Date.now() + 1, role: 'assistant', text: 'The assistant service is not connected yet. Please check the backend API configuration.' },
+      ])
+    } finally {
+      setAsking(false)
+    }
+  }
+
   async function submitQuestion(e: React.FormEvent) {
     e.preventDefault()
-    if (!question.trim()) return
-    setAsking(true)
-    try { setAnswer(await askAssistant(question, selected?.name || 'government schemes')) }
-    catch { setAnswer('The assistant service is not connected yet. Please check the backend API configuration.') }
-    finally { setAsking(false) }
+    await sendQuestion(question)
   }
 
   const navItems: { id: Page; label: string; icon: typeof Home }[] = [
     { id: 'overview', label: 'Overview', icon: Home },
     { id: 'profile', label: 'My profile', icon: UserRound },
     { id: 'schemes', label: 'Find schemes', icon: Landmark },
+    { id: 'eligibility', label: 'Eligibility checker', icon: BadgeCheck },
+    { id: 'documents', label: 'Document checklist', icon: FileText },
+    { id: 'tracker', label: 'Application tracker', icon: CheckCircle2 },
     { id: 'assistant', label: 'AI assistant', icon: Bot },
   ]
 
@@ -101,7 +157,7 @@ export default function App() {
     </aside>
 
     <main className="main-area">
-      <header className="topbar"><button className="mobile-menu" onClick={() => setMobileOpen(true)}><Menu/></button><div className="breadcrumb">Workspace <span>/</span> <b>{navItems.find(n => n.id === page)?.label || 'Overview'}</b></div><div className="top-actions"><span className="demo-pill"><span/> DEMO ENVIRONMENT</span><div className="avatar">BM</div></div></header>
+      <header className="topbar"><button className="mobile-menu" onClick={() => setMobileOpen(true)}><Menu/></button><div className="breadcrumb">Workspace <span>/</span> <b>{navItems.find(n => n.id === page)?.label || 'Overview'}</b></div><div className="top-actions"><span className="demo-pill"><span/> DEMO ENVIRONMENT</span><div className="avatar"></div></div></header>
       <div className="content">
         {page === 'overview' && <section>
           <div className="hero"><div className="hero-copy"><div className="eyebrow"><Sparkles size={14}/> GOVERNMENT BENEFITS, MADE SIMPLER</div><h1>Find the support<br/>you <em>deserve.</em></h1><p>Discover government schemes that may fit your needs. Understand eligibility, prepare documents and take the next step with confidence.</p><div className="hero-buttons"><button className="btn-primary" onClick={() => navigate('profile')}>Build my profile <ArrowRight size={17}/></button><button className="btn-quiet" onClick={() => navigate('schemes')}>Explore schemes</button></div></div><div className="hero-art"><div className="art-circle circle-one"/><div className="art-circle circle-two"/><div className="art-card"><div className="art-icon"><Landmark size={28}/></div><span>YOUR BENEFITS,</span><b>Within reach.</b><div className="art-lines"><i/><i/><i/></div><div className="art-check"><CheckCircle2 size={17}/> Guided, step by step</div></div><div className="floating-chip chip-top"><BadgeCheck size={16}/> Personalized matches</div><div className="floating-chip chip-bottom"><FileText size={16}/> Document checklist</div></div></div>
@@ -221,7 +277,118 @@ export default function App() {
           <button className="btn-primary full-button" onClick={() => navigate('assistant')}>Ask assistant about this scheme <ArrowRight size={16}/></button></div></div>}
         </section>}
 
-        {page === 'assistant' && <section className="page-section"><div className="page-intro"><div className="eyebrow muted">YOUR APPLICATION COMPANION</div><h1>Questions are welcome.</h1><p>Get a simpler explanation of scheme information and common application terms.</p></div><div className="assistant-layout"><div className="assistant-main"><div className="chat-head"><div className="bot-avatar"><Bot/></div><div><b>YojanaSaarthi Assistant</b><small><span className="online-dot"/> Demo assistant · General guidance</small></div><span className="ai-label"><Sparkles size={13}/> AI GUIDE</span></div><div className="chat-body"><div className="message bot-message"><div className="mini-bot"><Bot size={16}/></div><div><b>Namaste! How can I help?</b><p>I can help explain scheme terms, document lists and common application steps. Ask in everyday language.</p></div></div>{answer && <div className="message bot-message"><div className="mini-bot"><Bot size={16}/></div><div><b>Here's some guidance</b><p>{answer}</p></div></div>}</div><form className="chat-input" onSubmit={submitQuestion}><input value={question} onChange={e => setQuestion(e.target.value)} placeholder="E.g. What is an income certificate?"/><button className="btn-primary" disabled={asking || !question.trim()}>{asking ? 'Thinking…' : 'Send'} <ArrowRight size={15}/></button></form><div className="chat-disclaimer">This is general demo guidance, not legal advice or an official government response.</div></div><aside className="suggestions"><h3>Try asking</h3>{['What is an income certificate?','How do I prepare my documents?','What does eligibility mean?','How can I check my application status?'].map(q => <button key={q} onClick={() => setQuestion(q)}>{q}<ArrowRight size={14}/></button>)}<div className="suggestion-note"><ShieldCheck size={17}/><p>Never share Aadhaar numbers, passwords, OTPs or bank credentials in this chat.</p></div></aside></div></section>}
+
+        {page === 'eligibility' && <section className="page-section">
+          <div className="page-intro"><div className="eyebrow muted">PERSONALIZED SCHEME REVIEW</div><h1>Check your eligibility.</h1><p>Use your saved profile and review the scheme’s listed requirements. This is a self-check, not an official eligibility decision.</p></div>
+          <div className="notice"><ShieldCheck size={17}/> Your profile details are reused below. Please verify every requirement against the official scheme portal.</div>
+          <div className="form-card" style={{ maxWidth: 900 }}>
+            <div className="form-title"><div className="step-icon mint"><BadgeCheck/></div><div><h2>Select a scheme</h2><p>Choose a scheme to review its eligibility criteria.</p></div></div>
+            <label style={{ display: 'block', marginBottom: 20 }}>Government scheme
+              <select value={eligibilitySchemeId} onChange={e => { setEligibilitySchemeId(e.target.value); setEligibilityChecks({}) }} style={{ width: '100%', marginTop: 8 }}>
+                {schemes.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </label>
+            {(() => {
+              const scheme = schemes.find(s => s.id === eligibilitySchemeId) || schemes[0]
+              if (!scheme) return <p>No schemes available. Explore schemes first.</p>
+              const criteria = scheme.eligibility.length ? scheme.eligibility : ['Review the official eligibility rules for this scheme.']
+              const checkedCount = criteria.filter((_, i) => eligibilityChecks[`${scheme.id}-${i}`]).length
+              return <>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 12, marginBottom: 22 }}>
+                  <div className="benefit"><b>Age</b><span>{profile.age} years</span></div>
+                  <div className="benefit"><b>State / UT</b><span>{profile.state || 'Not provided'}</span></div>
+                  <div className="benefit"><b>Annual family income</b><span>₹{Number(profile.annualIncome || 0).toLocaleString('en-IN')}</span></div>
+                  <div className="benefit"><b>Occupation / category</b><span>{profile.occupation || 'Not provided'} · {profile.category || 'Not provided'}</span></div>
+                </div>
+                <h3 style={{ marginBottom: 8 }}>Eligibility requirements</h3>
+                <p style={{ color: '#64748B', marginTop: 0 }}>Read each requirement and tick it only if it applies to you.</p>
+                <div style={{ display: 'grid', gap: 10 }}>
+                  {criteria.map((criterion, i) => <label key={`${scheme.id}-${i}`} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, border: '1px solid #E2E8F0', borderRadius: 12, padding: 14, cursor: 'pointer' }}>
+                    <input type="checkbox" checked={Boolean(eligibilityChecks[`${scheme.id}-${i}`])} onChange={e => setEligibilityChecks(prev => ({ ...prev, [`${scheme.id}-${i}`]: e.target.checked }))} style={{ marginTop: 4 }}/>
+                    <span>{criterion}</span>
+                  </label>)}
+                </div>
+                <div style={{ marginTop: 20, padding: 16, borderRadius: 12, background: checkedCount === criteria.length ? '#EAF3ED' : '#F8FAFC', border: '1px solid #E2E8F0' }}>
+                  <b>{checkedCount === criteria.length ? 'Self-review completed' : `${checkedCount} of ${criteria.length} requirements reviewed`}</b>
+                  <p style={{ marginBottom: 0 }}>{checkedCount === criteria.length ? 'You marked all listed criteria as applicable. This does not confirm eligibility; verify the official rules and documents.' : 'Continue reviewing the listed criteria. Unchecked items are not automatically considered unmet.'}</p>
+                </div>
+                <div className="form-footer" style={{ marginTop: 20 }}><button className="btn-quiet" onClick={() => { setEligibilityChecks({}); }}>Reset checklist</button><button className="btn-primary" onClick={() => navigate('assistant')}>Ask assistant about this scheme <ArrowRight size={16}/></button></div>
+              </>
+            })()}
+          </div>
+        </section>}
+
+        {page === 'documents' && <section className="page-section">
+          <div className="page-intro"><div className="eyebrow muted">APPLICATION PREPARATION</div><h1>Prepare your documents.</h1><p>Keep track of documents you may need before applying. Requirements can vary by scheme and applicant.</p></div>
+          <div className="notice"><ShieldCheck size={17}/> This is a personal checklist, not an official document requirement list. Verify the latest requirements on the scheme’s official portal.</div>
+          <div className="form-card" style={{ maxWidth: 900 }}>
+            <div className="form-title"><div className="step-icon peach"><FileText/></div><div><h2>Choose a scheme</h2><p>Your checklist progress is saved in this browser.</p></div></div>
+            <label style={{ display: 'block', marginBottom: 20 }}>Government scheme
+              <select value={eligibilitySchemeId} onChange={e => setEligibilitySchemeId(e.target.value)} style={{ width: '100%', marginTop: 8 }}>
+                {schemes.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </label>
+            {(() => {
+              const scheme = schemes.find(s => s.id === eligibilitySchemeId) || schemes[0]
+              if (!scheme) return <p>No schemes available. Explore schemes first.</p>
+              const docs = scheme.documents.length ? scheme.documents : ['Identity proof (as required)', 'Address / residence proof (as required)', 'Income certificate (if applicable)', 'Bank account details / passbook (if applicable)', 'Recent photograph (if applicable)']
+              const checked = docs.filter((_, i) => documentChecks[`${scheme.id}-${i}`]).length
+              const progress = Math.round(checked / docs.length * 100)
+              return <>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', marginBottom: 8 }}><b>{checked} of {docs.length} prepared</b><span>{progress}%</span></div>
+                <div style={{ height: 9, background: '#E2E8F0', borderRadius: 999, overflow: 'hidden', marginBottom: 20 }}><div style={{ height: '100%', width: `${progress}%`, background: '#19365D', borderRadius: 999, transition: 'width .2s' }}/></div>
+                <div style={{ display: 'grid', gap: 10 }}>
+                  {docs.map((doc, i) => {
+                    const key = `${scheme.id}-${i}`
+                    const done = Boolean(documentChecks[key])
+                    return <label key={key} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, border: '1px solid #E2E8F0', borderRadius: 12, padding: 14, cursor: 'pointer', background: done ? '#EAF3ED' : '#FFFFFF' }}>
+                      <input type="checkbox" checked={done} onChange={e => setDocumentChecks(prev => ({ ...prev, [key]: e.target.checked }))} style={{ marginTop: 4 }}/>
+                      <span style={{ flex: 1, textDecoration: done ? 'line-through' : 'none' }}>{doc}</span>
+                      {done && <CheckCircle2 size={17} color="#218565"/>}
+                    </label>
+                  })}
+                </div>
+                <div className="form-footer" style={{ marginTop: 20 }}>
+                  <button className="btn-quiet" onClick={() => setDocumentChecks(prev => Object.fromEntries(Object.entries(prev).filter(([key]) => !key.startsWith(`${scheme.id}-`))))}>Reset this scheme</button>
+                  <button className="btn-primary" onClick={() => navigate('assistant')}>Ask assistant about documents <ArrowRight size={16}/></button>
+                </div>
+              </>
+            })()}
+          </div>
+        </section>}
+
+        {page === 'tracker' && <section className="page-section">
+          <div className="page-intro"><div className="eyebrow muted">APPLICATION ORGANIZER</div><h1>Track your applications.</h1><p>Keep a personal record of scheme applications and their progress.</p></div>
+          <div className="notice"><ShieldCheck size={17}/> This tracker is manual and saved in this browser. It does not retrieve official application status.</div>
+          <div className="form-card" style={{ maxWidth: 900 }}>
+            <div className="form-title"><div className="step-icon mint"><CheckCircle2/></div><div><h2>Add an application</h2><p>Record a scheme and update its status as you progress.</p></div></div>
+            <form onSubmit={e => { e.preventDefault(); const scheme = schemes.find(x => x.id === trackerSchemeId); if (!scheme) return; setApplications(prev => [{ id: `${Date.now()}`, schemeId: scheme.id, status: trackerStatus, date: trackerDate, reference: trackerReference.trim(), notes: trackerNotes.trim() }, ...prev]); setTrackerReference(''); setTrackerNotes(''); setTrackerStatus('Not started') }}>
+              <div className="form-grid">
+                <label>Scheme<select required value={trackerSchemeId} onChange={e => setTrackerSchemeId(e.target.value)}>{schemes.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
+                <label>Status<select value={trackerStatus} onChange={e => setTrackerStatus(e.target.value)}>{['Not started','Documents ready','Submitted','Under review','Approved','Rejected'].map(x => <option key={x}>{x}</option>)}</select></label>
+                <label>Application date<input type="date" value={trackerDate} onChange={e => setTrackerDate(e.target.value)} required /></label>
+                <label>Reference number (optional)<input value={trackerReference} onChange={e => setTrackerReference(e.target.value)} placeholder="Enter application/reference ID" /></label>
+                <label style={{ gridColumn: '1 / -1' }}>Notes / next steps<textarea value={trackerNotes} onChange={e => setTrackerNotes(e.target.value)} rows={3} placeholder="For example: visit the local office next week" /></label>
+              </div><div className="form-footer"><span>Keep reference numbers private on shared devices.</span><button className="btn-primary" type="submit">Add to tracker <ArrowRight size={16}/></button></div>
+            </form>
+          </div>
+          <div style={{ display: 'grid', gap: 14, marginTop: 22 }}>
+            {applications.map(app => { const scheme = schemes.find(s => s.id === app.schemeId) || demoSchemes.find(s => s.id === app.schemeId); return <article className="scheme-card" key={app.id}><div className="scheme-card-top"><span className="scheme-category">{app.status}</span><span className="match-score">{app.date}</span></div><h3>{scheme?.name || 'Government scheme'}</h3>{app.reference && <p><b>Reference:</b> {app.reference}</p>}{app.notes && <p>{app.notes}</p>}<div className="form-grid" style={{ marginTop: 12 }}><label>Update status<select value={app.status} onChange={e => setApplications(prev => prev.map(x => x.id === app.id ? { ...x, status: e.target.value } : x))}>{['Not started','Documents ready','Submitted','Under review','Approved','Rejected'].map(x => <option key={x}>{x}</option>)}</select></label><label>Update notes<input value={app.notes} onChange={e => setApplications(prev => prev.map(x => x.id === app.id ? { ...x, notes: e.target.value } : x))} placeholder="Next step or reminder" /></label></div><div className="form-footer"><button className="btn-quiet" onClick={() => setApplications(prev => prev.filter(x => x.id !== app.id))}>Remove entry</button></div></article> })}
+            {applications.length === 0 && <div className="empty-state">No applications tracked yet. Add your first application above.</div>}
+          </div>
+        </section>}
+
+        {page === 'assistant' && <section className="page-section"><div className="page-intro"><div className="eyebrow muted">YOUR APPLICATION COMPANION</div><h1>Questions are welcome.</h1><p>Get a simpler explanation of scheme information and common application terms.</p></div><div className="assistant-layout"><div className="assistant-main"><div className="chat-head"><div className="bot-avatar"><Bot/></div><div><b>YojanaSaarthi Assistant</b><small><span className="online-dot"/> Demo assistant · General guidance</small></div><span className="ai-label"><Sparkles size={13}/> AI GUIDE</span></div><div className="chat-body"><div className="message bot-message"><div className="mini-bot"><Bot size={16}/></div><div><b>Namaste! How can I help?</b><p>I can help explain scheme terms, document lists and common application steps. Ask in everyday language.</p></div></div>{messages.map(message => message.role === 'user' ? (
+  <div className="message user-message" key={message.id} style={{ alignSelf: 'flex-end', maxWidth: '85%', background: '#19365D', color: '#FFFFFF', borderRadius: '14px 14px 4px 14px', padding: '12px 16px', margin: '8px 0' }}>
+    <div><b>You</b><p style={{ color: '#FFFFFF', margin: '6px 0 0', lineHeight: 1.6, overflowWrap: 'anywhere' }}>{message.text}</p></div>
+  </div>
+) : (
+  <div className="message bot-message" key={message.id}>
+    <div className="mini-bot"><Bot size={16}/></div>
+    <div><b>YojanaSaarthi Assistant</b><p>{message.text}</p></div>
+  </div>
+))}
+{asking && <div className="message bot-message"><div className="mini-bot"><Bot size={16}/></div><div><b>Assistant</b><p>Thinking…</p></div></div>}<div ref={chatEndRef} /></div><form className="chat-input" onSubmit={submitQuestion}><input value={question} onChange={e => setQuestion(e.target.value)} placeholder="E.g. What is an income certificate?"/><button className="btn-primary" disabled={asking || !question.trim()}>{asking ? 'Thinking…' : 'Send'} <ArrowRight size={15}/></button></form><div className="chat-disclaimer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}><span>This is general demo guidance, not legal advice or an official government response.</span><button type="button" onClick={() => { if (!asking) { setMessages([]); setQuestion('') } }} disabled={asking || messages.length === 0} style={{ border: '1px solid #E2E8F0', background: '#FFFFFF', color: '#19365D', borderRadius: 999, padding: '6px 12px', cursor: messages.length && !asking ? 'pointer' : 'not-allowed', opacity: messages.length && !asking ? 1 : 0.5 }}>Clear chat</button></div></div><aside className="suggestions"><h3>Try asking</h3>{['What is an income certificate?','How do I prepare my documents?','What does eligibility mean?','How can I check my application status?'].map(q => <button key={q} onClick={() => sendQuestion(q)}>{q}<ArrowRight size={14}/></button>)}<div className="suggestion-note"><ShieldCheck size={17}/><p>Never share Aadhaar numbers, passwords, OTPs or bank credentials in this chat.</p></div></aside></div></section>}
         <footer className="footer"><span>© 2026 YojanaSaarthi · Academic project prototype</span><span>Designed for accessible public information</span></footer>
       </div>
     </main>
