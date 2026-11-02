@@ -27,7 +27,6 @@ def scheme_list(request):
 
     return JsonResponse(data, safe=False)
 
-
 def scheme_detail(request, scheme_id):
     scheme = get_object_or_404(Scheme, id=scheme_id)
 
@@ -44,6 +43,75 @@ def scheme_detail(request, scheme_id):
     }
 
     return JsonResponse(data)
+
+
+def validate_profile(profile):
+    required_fields = {
+        "name",
+        "age",
+        "state",
+        "annual_income",
+        "occupation",
+        "education",
+        "gender",
+        "category",
+        "interests",
+    }
+
+    missing_fields = required_fields - profile.keys()
+    extra_fields = profile.keys() - required_fields
+
+    if missing_fields:
+        raise ValueError(
+            f"Missing required fields: {', '.join(sorted(missing_fields))}"
+        )
+
+    if extra_fields:
+        raise ValueError(
+            f"Unexpected fields: {', '.join(sorted(extra_fields))}"
+        )
+
+    string_fields = [
+        "name", "state", "occupation",
+        "education", "gender", "category"
+    ]
+
+    for field in string_fields:
+        if not isinstance(profile[field], str):
+            raise ValueError(f"{field} must be a string.")
+
+        if field != "gender" and not profile[field].strip():
+            raise ValueError(f"{field} must be a non-empty string.")
+
+    if (
+        isinstance(profile["age"], bool)
+        or not isinstance(profile["age"], int)
+        or not 1 <= profile["age"] <= 120
+    ):
+        raise ValueError("Age must be an integer between 1 and 120.")
+
+    income = profile["annual_income"]
+
+    if (
+        isinstance(income, bool)
+        or not isinstance(income, (int, float))
+        or income < 0
+    ):
+        raise ValueError("Annual income must be a non-negative number.")
+
+    interests = profile["interests"]
+
+    if (
+        not isinstance(interests, list)
+        or not all(
+            isinstance(item, str) and item.strip()
+            for item in interests
+        )
+    ):
+        raise ValueError("Interests must be a list of non-empty strings.")
+
+    return profile
+
 @csrf_exempt
 def recommendation_api(request):
 
@@ -55,7 +123,7 @@ def recommendation_api(request):
 
     try:
         profile = json.loads(request.body)
-    except json.JSONDecodeError:
+    except (json.JSONDecodeError, UnicodeDecodeError):
         return JsonResponse(
             {"error": "Invalid JSON data."},
             status=400
@@ -68,7 +136,9 @@ def recommendation_api(request):
         )
 
     try:
+        profile = validate_profile(profile)
         results = recommend_schemes(profile)
+
     except ValueError as error:
         return JsonResponse(
             {"error": str(error)},

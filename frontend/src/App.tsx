@@ -5,8 +5,17 @@ import { demoSchemes } from './data/schemes'
 import { askAssistant, getRecommendations } from './services/api'
 
 type Page = 'overview' | 'profile' | 'schemes' | 'assistant'
-const emptyProfile: CitizenProfile = { name: '', age: 21, state: 'Rajasthan', annualIncome: 200000, occupation: 'Student', education: 'Undergraduate', category: 'General' }
-
+const emptyProfile: CitizenProfile = {
+  name: '',
+  age: 21,
+  state: 'Rajasthan',
+  annualIncome: 200000,
+  occupation: 'Student',
+  education: 'Undergraduate',
+  gender: '',
+  category: 'General',
+  interests: [],
+}
 export default function App() {
   const [page, setPage] = useState<Page>('overview')
   const [profile, setProfile] = useState<CitizenProfile>(emptyProfile)

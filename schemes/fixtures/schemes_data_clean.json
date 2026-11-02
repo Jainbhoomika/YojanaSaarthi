@@ -436,5 +436,845 @@
     "is_mandatory": true,
     "source_reference": ""
   }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 10,
+  "fields": {
+    "scheme": 1,
+    "criterion_type": "age",
+    "operator": "LESS_THAN",
+    "criterion_value": 10,
+    "is_mandatory": true,
+    "source_reference": "https://www.nsiindia.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 11,
+  "fields": {
+    "scheme": 1,
+    "criterion_type": "gender",
+    "operator": "EQUALS",
+    "criterion_value": "Female",
+    "is_mandatory": true,
+    "source_reference": "https://www.nsiindia.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 12,
+  "fields": {
+    "scheme": 2,
+    "criterion_type": "gender",
+    "operator": "EQUALS",
+    "criterion_value": "Female",
+    "is_mandatory": true,
+    "source_reference": "https://ojspm.rajasthan.gov.in/Public/raj_shree.pdf"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 13,
+  "fields": {
+    "scheme": 2,
+    "criterion_type": "state",
+    "operator": "EQUALS",
+    "criterion_value": "Rajasthan",
+    "is_mandatory": true,
+    "source_reference": "https://ojspm.rajasthan.gov.in/Public/raj_shree.pdf"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 14,
+  "fields": {
+    "scheme": 2,
+    "criterion_type": "age",
+    "operator": "GREATER_THAN",
+    "criterion_value": 0,
+    "is_mandatory": true,
+    "source_reference": "https://ojspm.rajasthan.gov.in/Public/raj_shree.pdf"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 15,
+  "fields": {
+    "scheme": 3,
+    "criterion_type": "gender",
+    "operator": "EQUALS",
+    "criterion_value": "Female",
+    "is_mandatory": true,
+    "source_reference": "https://www.ugc.gov.in/Scholarships/stu_Scholarship4"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 16,
+  "fields": {
+    "scheme": 3,
+    "criterion_type": "age",
+    "operator": "LESS_THAN",
+    "criterion_value": 31,
+    "is_mandatory": true,
+    "source_reference": "https://www.ugc.gov.in/Scholarships/stu_Scholarship4"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 17,
+  "fields": {
+    "scheme": 3,
+    "criterion_type": "education",
+    "operator": "EQUALS",
+    "criterion_value": "First Year Postgraduate",
+    "is_mandatory": true,
+    "source_reference": "https://www.ugc.gov.in/Scholarships/stu_Scholarship4"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 18,
+  "fields": {
+    "scheme": 3,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Single Girl Child",
+    "is_mandatory": true,
+    "source_reference": "https://www.ugc.gov.in/Scholarships/stu_Scholarship4"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 19,
+  "fields": {
+    "scheme": 3,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Single Girl Child",
+    "is_mandatory": true,
+    "source_reference": "https://www.ugc.gov.in/Scholarships/stu_Scholarship4"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 20,
+  "fields": {
+    "scheme": 4,
+    "criterion_type": "education",
+    "operator": "EQUALS",
+    "criterion_value": "Class 8",
+    "is_mandatory": true,
+    "source_reference": "https://rajshaladarpan.rajasthan.gov.in/SD4/NMMS/eligibilitycriteria.aspx"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 21,
+  "fields": {
+    "scheme": 4,
+    "criterion_type": "annual_income",
+    "operator": "LESS_THAN",
+    "criterion_value": 350000,
+    "is_mandatory": true,
+    "source_reference": "https://rajshaladarpan.rajasthan.gov.in/SD4/NMMS/eligibilitycriteria.aspx"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 22,
+  "fields": {
+    "scheme": 4,
+    "criterion_type": "category",
+    "operator": "IN",
+    "criterion_value": "Government / Government-aided / Local Body School",
+    "is_mandatory": true,
+    "source_reference": "https://rajshaladarpan.rajasthan.gov.in/SD4/NMMS/eligibilitycriteria.aspx"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 23,
+  "fields": {
+    "scheme": 4,
+    "criterion_type": "category",
+    "operator": "IN",
+    "criterion_value": "Government / Government-aided / Local Body School",
+    "is_mandatory": true,
+    "source_reference": "https://rajshaladarpan.rajasthan.gov.in/SD4/NMMS/eligibilitycriteria.aspx"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 24,
+  "fields": {
+    "scheme": 5,
+    "criterion_type": "category",
+    "operator": "IN",
+    "criterion_value": "OBC, EBC, DNT",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/pm-yasasvitcceobcebcdnts"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 25,
+  "fields": {
+    "scheme": 5,
+    "criterion_type": "education",
+    "operator": "GREATER_THAN",
+    "criterion_value": "Class 12",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/pm-yasasvitcceobcebcdnts"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 26,
+  "fields": {
+    "scheme": 5,
+    "criterion_type": "annual_income",
+    "operator": "LESS_THAN",
+    "criterion_value": 250000,
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/pm-yasasvitcceobcebcdnts"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 27,
+  "fields": {
+    "scheme": 5,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Student",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/pm-yasasvitcceobcebcdnts"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 28,
+  "fields": {
+    "scheme": 6,
+    "criterion_type": "education",
+    "operator": "IN",
+    "criterion_value": "College / University",
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 29,
+  "fields": {
+    "scheme": 6,
+    "criterion_type": "annual_income",
+    "operator": "LESS_THAN",
+    "criterion_value": 450000,
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 30,
+  "fields": {
+    "scheme": 6,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Student",
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 31,
+  "fields": {
+    "scheme": 7,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Person with Disability (40% or more)",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/sak-dip"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 32,
+  "fields": {
+    "scheme": 7,
+    "criterion_type": "annual_income",
+    "operator": "LESS_THAN",
+    "criterion_value": 800000,
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/sak-dip"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 33,
+  "fields": {
+    "scheme": 7,
+    "criterion_type": "education",
+    "operator": "IN",
+    "criterion_value": "Diploma / Undergraduate",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/sak-dip"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 34,
+  "fields": {
+    "scheme": 7,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Student",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/sak-dip"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 35,
+  "fields": {
+    "scheme": 8,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Eligible CAPF / Assam Rifles Ward",
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 36,
+  "fields": {
+    "scheme": 8,
+    "criterion_type": "education",
+    "operator": "EQUALS",
+    "criterion_value": "First Professional Degree Course",
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 37,
+  "fields": {
+    "scheme": 8,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Student",
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 38,
+  "fields": {
+    "scheme": 9,
+    "criterion_type": "gender",
+    "operator": "EQUALS",
+    "criterion_value": "Female",
+    "is_mandatory": true,
+    "source_reference": "https://www.wcd.gov.in/women/pradhan-mantri-matru-vandana-yojna"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 39,
+  "fields": {
+    "scheme": 9,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Pregnant / Lactating Woman",
+    "is_mandatory": true,
+    "source_reference": "https://www.wcd.gov.in/women/pradhan-mantri-matru-vandana-yojna"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 40,
+  "fields": {
+    "scheme": 9,
+    "criterion_type": "annual_income",
+    "operator": "LESS_THAN",
+    "criterion_value": 800000,
+    "is_mandatory": true,
+    "source_reference": "https://www.wcd.gov.in/women/pradhan-mantri-matru-vandana-yojna"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 41,
+  "fields": {
+    "scheme": 9,
+    "criterion_type": "category",
+    "operator": "IN",
+    "criterion_value": "SC / ST / BPL / E-Shram / NFSA / PM-JAY / Other notified categories",
+    "is_mandatory": true,
+    "source_reference": "https://www.wcd.gov.in/women/pradhan-mantri-matru-vandana-yojna"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 42,
+  "fields": {
+    "scheme": 10,
+    "criterion_type": "gender",
+    "operator": "EQUALS",
+    "criterion_value": "Female",
+    "is_mandatory": true,
+    "source_reference": "https://pmuy.gov.in/ujjwala2.html"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 43,
+  "fields": {
+    "scheme": 10,
+    "criterion_type": "age",
+    "operator": "GREATER_THAN",
+    "criterion_value": 17,
+    "is_mandatory": true,
+    "source_reference": "https://pmuy.gov.in/ujjwala2.html"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 44,
+  "fields": {
+    "scheme": 10,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Woman from Poor Household",
+    "is_mandatory": true,
+    "source_reference": "https://pmuy.gov.in/ujjwala2.html"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 45,
+  "fields": {
+    "scheme": 11,
+    "criterion_type": "gender",
+    "operator": "EQUALS",
+    "criterion_value": "Female",
+    "is_mandatory": true,
+    "source_reference": "https://nsap.nic.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 46,
+  "fields": {
+    "scheme": 11,
+    "criterion_type": "age",
+    "operator": "BETWEEN",
+    "criterion_value": "40-79",
+    "is_mandatory": true,
+    "source_reference": "https://nsap.nic.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 47,
+  "fields": {
+    "scheme": 11,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "BPL Widow",
+    "is_mandatory": true,
+    "source_reference": "https://nsap.nic.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 48,
+  "fields": {
+    "scheme": 13,
+    "criterion_type": "age",
+    "operator": "BETWEEN",
+    "criterion_value": "18-70",
+    "is_mandatory": true,
+    "source_reference": "https://www.financialservices.gov.in/pmsby"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 49,
+  "fields": {
+    "scheme": 13,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Participating Bank / Post Office Account Holder",
+    "is_mandatory": true,
+    "source_reference": "https://www.financialservices.gov.in/pmsby"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 50,
+  "fields": {
+    "scheme": 14,
+    "criterion_type": "age",
+    "operator": "GREATER_THAN",
+    "criterion_value": 17,
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/pmv"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 51,
+  "fields": {
+    "scheme": 14,
+    "criterion_type": "occupation",
+    "operator": "IN",
+    "criterion_value": "Eligible Traditional Artisan / Craftsperson",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/pmv"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 52,
+  "fields": {
+    "scheme": 14,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Unorganised Sector Self-Employed",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/schemes/pmv"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 53,
+  "fields": {
+    "scheme": 15,
+    "criterion_type": "occupation",
+    "operator": "IN",
+    "criterion_value": "Small Business / Micro Enterprise",
+    "is_mandatory": true,
+    "source_reference": "https://financialservices.gov.in/pradhan-mantri-mudra-yojana-pmmy"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 54,
+  "fields": {
+    "scheme": 15,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Non-Corporate Micro Enterprise",
+    "is_mandatory": true,
+    "source_reference": "https://financialservices.gov.in/pradhan-mantri-mudra-yojana-pmmy"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 55,
+  "fields": {
+    "scheme": 16,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Street Vendor",
+    "is_mandatory": true,
+    "source_reference": "https://pmsvanidhi.mohua.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 56,
+  "fields": {
+    "scheme": 16,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Eligible Certificate of Vending / Letter of Recommendation Holder",
+    "is_mandatory": true,
+    "source_reference": "https://pmsvanidhi.mohua.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 57,
+  "fields": {
+    "scheme": 17,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Landholding Farmer",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/hi/schemes/pm-kisan"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 58,
+  "fields": {
+    "scheme": 17,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Eligible Farmer Family",
+    "is_mandatory": true,
+    "source_reference": "https://www.myscheme.gov.in/hi/schemes/pm-kisan"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 59,
+  "fields": {
+    "scheme": 18,
+    "criterion_type": "age",
+    "operator": "BETWEEN",
+    "criterion_value": "18-40",
+    "is_mandatory": true,
+    "source_reference": "https://maandhan.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 60,
+  "fields": {
+    "scheme": 18,
+    "criterion_type": "annual_income",
+    "operator": "LESS_THAN",
+    "criterion_value": 180000,
+    "is_mandatory": true,
+    "source_reference": "https://maandhan.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 61,
+  "fields": {
+    "scheme": 18,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Unorganised Worker",
+    "is_mandatory": true,
+    "source_reference": "https://maandhan.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 62,
+  "fields": {
+    "scheme": 19,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Eligible Household under PM-JAY",
+    "is_mandatory": true,
+    "source_reference": "https://beneficiary.nha.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 63,
+  "fields": {
+    "scheme": 19,
+    "criterion_type": "occupation",
+    "operator": "IN",
+    "criterion_value": "Notified Eligible Rural / Urban Occupational Category",
+    "is_mandatory": true,
+    "source_reference": "https://beneficiary.nha.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 64,
+  "fields": {
+    "scheme": 20,
+    "criterion_type": "state",
+    "operator": "IN",
+    "criterion_value": "All Participating States / UTs",
+    "is_mandatory": true,
+    "source_reference": "https://pmay-urban.gov.in/uploads/guidelines/Operational-Guidelines-of-PMAY-U-2.pdf"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 65,
+  "fields": {
+    "scheme": 20,
+    "criterion_type": "annual_income",
+    "operator": "LESS_THAN",
+    "criterion_value": 900000,
+    "is_mandatory": true,
+    "source_reference": "https://pmay-urban.gov.in/uploads/guidelines/Operational-Guidelines-of-PMAY-U-2.pdf"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 66,
+  "fields": {
+    "scheme": 20,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Urban Household",
+    "is_mandatory": true,
+    "source_reference": "https://pmay-urban.gov.in/uploads/guidelines/Operational-Guidelines-of-PMAY-U-2.pdf"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 67,
+  "fields": {
+    "scheme": 20,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "No Pucca House Anywhere in India",
+    "is_mandatory": true,
+    "source_reference": "https://pmay-urban.gov.in/uploads/guidelines/Operational-Guidelines-of-PMAY-U-2.pdf"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 68,
+  "fields": {
+    "scheme": 21,
+    "criterion_type": "age",
+    "operator": "GREATER_THAN",
+    "criterion_value": 9,
+    "is_mandatory": true,
+    "source_reference": "https://pmjdy.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 69,
+  "fields": {
+    "scheme": 21,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Unbanked Individual",
+    "is_mandatory": true,
+    "source_reference": "https://pmjdy.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 70,
+  "fields": {
+    "scheme": 22,
+    "criterion_type": "age",
+    "operator": "BETWEEN",
+    "criterion_value": "18-40",
+    "is_mandatory": true,
+    "source_reference": "https://www.npscra.nsdl.co.in/scheme-details.php"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 71,
+  "fields": {
+    "scheme": 22,
+    "criterion_type": "occupation",
+    "operator": "EQUALS",
+    "criterion_value": "Eligible Individual",
+    "is_mandatory": true,
+    "source_reference": "https://www.npscra.nsdl.co.in/scheme-details.php"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 72,
+  "fields": {
+    "scheme": 22,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Not an Income Tax Payer",
+    "is_mandatory": true,
+    "source_reference": "https://www.npscra.nsdl.co.in/scheme-details.php"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 73,
+  "fields": {
+    "scheme": 23,
+    "criterion_type": "age",
+    "operator": "GREATER_THAN",
+    "criterion_value": 59,
+    "is_mandatory": true,
+    "source_reference": "https://nsap.nic.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 74,
+  "fields": {
+    "scheme": 23,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "BPL Senior Citizen",
+    "is_mandatory": true,
+    "source_reference": "https://nsap.nic.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 75,
+  "fields": {
+    "scheme": 24,
+    "criterion_type": "age",
+    "operator": "GREATER_THAN",
+    "criterion_value": 59,
+    "is_mandatory": true,
+    "source_reference": "https://www.indiapost.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 76,
+  "fields": {
+    "scheme": 24,
+    "criterion_type": "category",
+    "operator": "IN",
+    "criterion_value": "Eligible Retired Civilian Employee / Retired Defence Personnel",
+    "is_mandatory": true,
+    "source_reference": "https://www.indiapost.gov.in/"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 77,
+  "fields": {
+    "scheme": 25,
+    "criterion_type": "education",
+    "operator": "EQUALS",
+    "criterion_value": "Student",
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/All-Scholarships"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 78,
+  "fields": {
+    "scheme": 25,
+    "criterion_type": "category",
+    "operator": "EQUALS",
+    "criterion_value": "Scheme-Specific Eligibility",
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/All-Scholarships"
+  }
+},
+{
+  "model": "schemes.eligibilitycriteria",
+  "pk": 79,
+  "fields": {
+    "scheme": 25,
+    "criterion_type": "state",
+    "operator": "IN",
+    "criterion_value": "All Participating States / UTs",
+    "is_mandatory": true,
+    "source_reference": "https://scholarships.gov.in/All-Scholarships"
+  }
 }
 ]
