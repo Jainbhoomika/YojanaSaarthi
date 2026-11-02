@@ -5,7 +5,9 @@ export type CitizenProfile = {
   annualIncome: number
   occupation: string
   education: string
+  gender: string
   category: string
+  interests: string[]
 }
 
 export type Scheme = {
