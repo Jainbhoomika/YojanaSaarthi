@@ -119,11 +119,15 @@ def recommend_schemes(profile, top_k=5):
         eligibility = evaluate_scheme_criteria(scheme, profile)
 
         results.append({
+            "id": scheme.id,
             "name": scheme.name,
             "description": scheme.description,
             "benefits": scheme.benefits,
             "eligibility": scheme.eligibility_summary,
+            "required_documents": scheme.required_documents,
+            "application_process": scheme.application_process,
             "official_url": scheme.official_url,
+            "last_verified": scheme.last_verified.isoformat() if scheme.last_verified else None,
             "similarity_score": round(scores[index].item(), 4),
             "eligibility_status": eligibility["status"],
             "eligibility_reason": eligibility["reason"],

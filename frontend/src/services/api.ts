@@ -25,7 +25,10 @@ type BackendScheme = {
   description: string
   benefits: string
   eligibility: string
+  required_documents: string
+  application_process: string
   official_url: string
+  last_verified: string | null
   similarity_score: number
   eligibility_status: string
   eligibility_reason: string
@@ -79,18 +82,34 @@ function mapScheme(scheme: BackendScheme): Scheme {
     ministry: 'Government of India',
     description: scheme.description,
     benefit: scheme.benefits,
+
     eligibility: [
       scheme.eligibility,
       `Status: ${scheme.eligibility_status}`,
       scheme.eligibility_reason,
     ],
-    documents: [],
-    howToApply: [
-      'Visit the official scheme website for application instructions.',
-    ],
+
+    documents: scheme.required_documents
+      ? scheme.required_documents
+          .split(/\r?\n/)
+          .map(item => item.trim())
+          .filter(Boolean)
+      : [],
+
+    howToApply: scheme.application_process
+      ? scheme.application_process
+          .split(/\r?\n/)
+          .map(item => item.trim())
+          .filter(Boolean)
+      : [],
+
     category: 'Other',
     match: Math.round(scheme.similarity_score * 100),
     tag: scheme.eligibility_status.replace(/_/g, ' '),
+
+    // Newly added fields
+    officialUrl: scheme.official_url,
+    lastVerified: scheme.last_verified,
   }
 }
 
