@@ -5,11 +5,6 @@
 @media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.25s;box-shadow:none}.sidebar-open{transform:translateX(0);box-shadow:15px 0 40px #152c1e22}.mobile-close,.mobile-menu{display:grid;place-items:center;border:0;background:transparent;color:#506157}.mobile-close{margin-left:auto}.mobile-menu{margin-right:12px}.main-area{margin-left:0}.topbar{height:60px;padding:0 16px}.content{padding:22px 16px}.demo-pill{font-size:8px}.hero{grid-template-columns:1fr;padding:28px 24px}.hero h1{font-size:36px}.hero-art{min-height:245px;margin-top:10px}.chip-top{right:2%}.chip-bottom{left:2%}.steps-grid{grid-template-columns:1fr}.step-card{min-height:auto}.step-card p{min-height:0}.trust-strip{display:grid;grid-template-columns:1fr;gap:14px}.footer{gap:10px;line-height:1.5}.form-grid,.scheme-grid,.assistant-layout{grid-template-columns:1fr}.page-intro h1{font-size:30px}.form-card{padding:18px}.form-footer{gap:10px}.form-footer>span{max-width:120px;line-height:1.5}.filter-row{flex-direction:column}.select-filter select{flex:1}.chat-input{flex-wrap:wrap}.chat-input button{width:100%}.detail-modal{padding:22px}.breadcrumb{font-size:10px}}
 
 
-/* ==========================================================
-   YojanaSaarthi — Navy + Coral theme
-   Inspired by the provided GovAssist reference screenshot.
-   Existing React components and application behavior unchanged.
-   ========================================================== */
 :root {
   --green: #19365D;          /* Primary navy */
   --dark: #142B4A;           /* Deep navy */
@@ -208,4 +203,32 @@ button:focus-visible, input:focus-visible, select:focus-visible {
   .form-footer { align-items: flex-start; flex-direction: column; }
   .form-footer > span { max-width: none; }
   .trust-strip { padding-left: 0; padding-right: 0; }
+}
+.eligibility-status {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #fff4dc;
+  color: #8a5b00;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.official-link-section {
+  margin: 20px 0;
+}
+
+.official-link-section a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #126b50;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.verification-date {
+  color: #78847d;
+  font-size: 12px;
 }

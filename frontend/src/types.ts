@@ -22,4 +22,6 @@ export type Scheme = {
   category: string
   match: number
   tag: string
+  officialUrl?: string
+  lastVerified?: string | null
 }
